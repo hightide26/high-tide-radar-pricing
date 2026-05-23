@@ -895,13 +895,16 @@ h1{
   background:var(--bg-2);
   border-top:1px solid var(--border);
 }
-.demo-inner{max-width:620px;margin:0 auto;text-align:center}
+.demo-inner{max-width:780px;margin:0 auto;text-align:center}
 .demo-inner h2{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.03em;line-height:1.16;margin-bottom:14px;color:var(--text-h)}
 .demo-inner > p{font-size:.93rem;color:var(--text-m);line-height:1.72;margin-bottom:36px}
 .demo-card{
   background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:40px;box-shadow:var(--shadow-md);
   display:flex;flex-direction:column;gap:24px;
+}
+.demo-form-wrap{
+  width:100%;border-radius:12px;overflow:hidden;
 }
 .demo-feats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .demo-feat{text-align:center;padding:12px;position:relative}
@@ -1634,13 +1637,26 @@ footer{
             <div class="demo-feat-text">Zero Obligation</div>
           </div>
         </div>
-        <a href="mailto:chantz@hightidemarketing.com?subject=High Tide Radar Demo Request" class="btn btn-primary btn-xl" style="justify-content:center;width:100%">
-          Request Your Free Demo
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <p style="font-size:.74rem;color:var(--text-s);text-align:center">
-          Email <a href="mailto:chantz@hightidemarketing.com" style="color:var(--purple-3);text-decoration:none">chantz@hightidemarketing.com</a> or use the button above.
-        </p>
+        <div class="demo-form-wrap">
+          <iframe
+            src="https://api.leadconnectorhq.com/widget/form/ASy6OmSyVHSACjwk3RV8"
+            style="width:100%;height:2287px;border:none;border-radius:8px"
+            id="inline-ASy6OmSyVHSACjwk3RV8"
+            data-layout="{'id':'INLINE'}"
+            data-trigger-type="alwaysShow"
+            data-trigger-value=""
+            data-activation-type="alwaysActivated"
+            data-activation-value=""
+            data-deactivation-type="neverDeactivate"
+            data-deactivation-value=""
+            data-form-name="Form 1"
+            data-height="2287"
+            data-layout-iframe-id="inline-ASy6OmSyVHSACjwk3RV8"
+            data-form-id="ASy6OmSyVHSACjwk3RV8"
+            title="Form 1">
+          </iframe>
+          <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+        </div>
       </div>
     </div>
   </div>
