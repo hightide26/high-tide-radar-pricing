@@ -975,9 +975,23 @@ footer{
 .faq-a a:hover{text-decoration:underline}
 
 /* ════════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVE — TABLET (≤960px)
 ════════════════════════════════════════ */
 @media(max-width:960px){
+  /* Nav */
+  .nav-inner{padding:0 20px}
+
+  /* Hero — hide floating side cards, collapse to single center column */
+  .hero-middle-row{display:block}
+  .hf-side-col{display:none}
+  .ss-badge{display:none}
+
+  /* Remove perspective tilt on screenshots — causes horizontal overflow */
+  .screenshot-wrap .browser-frame,
+  .feature-grid.flip .screenshot-wrap .browser-frame{transform:none}
+  .screenshot-wrap:hover .browser-frame{transform:none}
+
+  /* Grids → single column */
   .stats-row{grid-template-columns:repeat(2,1fr)}
   .stat-cell:nth-child(2)::after{display:none}
   .pain-grid{grid-template-columns:1fr}
@@ -987,12 +1001,72 @@ footer{
   .feature-grid.flip{direction:ltr}
   .audience-grid{grid-template-columns:1fr}
   .howit-grid{grid-template-columns:1fr;gap:16px}
-  .beta-cards{grid-template-columns:1fr;max-width:400px}
-  .nav-inner{padding:0 20px}
-  .ss-badge.top-right,.ss-badge.bottom-left{display:none}
-  .hero-middle-row{flex-direction:column;gap:24px}
-  .hf-side-col{width:100%;flex-direction:row;flex-wrap:wrap}
-  .hf-side-col .hf-card{flex:1;min-width:200px}
+  .beta-cards{grid-template-columns:1fr;max-width:420px}
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤640px)
+════════════════════════════════════════ */
+@media(max-width:640px){
+  /* Container */
+  .container,.container-wide{padding:0 16px}
+
+  /* Nav — hide beta badge to prevent overflow, tighten padding */
+  .nav-inner{padding:0 16px}
+  .nav-beta{display:none}
+
+  /* Hero */
+  #hero{padding:88px 0 0}
+  .hero-eyebrow{flex-direction:column;align-items:center;gap:8px;margin-bottom:20px}
+  .hero-sub{font-size:.9rem;margin-bottom:28px;padding:0 4px}
+  .hero-ctas{flex-direction:column;align-items:center;gap:10px}
+  .hero-ctas .btn-xl{width:100%;max-width:300px;justify-content:center}
+  .hero-trust{flex-direction:column;gap:10px;padding-top:24px;margin-bottom:52px}
+  .trust-label{text-align:center}
+
+  /* VSL bleed — reduce amount on mobile */
+  .vsl-wrap{margin-bottom:-60px}
+  #marquee-strip{padding-top:80px}
+
+  /* Marquee */
+  .marquee-item{font-size:.78rem;padding:0 20px}
+
+  /* Stats bar */
+  .stat-cell{padding:20px 12px}
+  .stat-num{font-size:1.6rem}
+  .stat-cell:nth-child(3)::after{display:none}
+
+  /* Section spacing */
+  #platform-overview,#problem,#solution,#audience,#howit,#faq{padding:64px 0}
+  #bigstat,#pullquote{padding:56px 0}
+  #beta,#demo{padding:64px 0}
+  .feature-section{padding:64px 0}
+  .section-header{margin-bottom:36px}
+
+  /* Feature sections */
+  .feature-grid{gap:28px}
+
+  /* Beta / pricing */
+  .beta-cards{max-width:100%}
+  .beta-card{padding:28px 18px}
+  .beta-inner > p{margin-bottom:36px}
+
+  /* Demo card */
+  .demo-card{padding:24px 16px}
+  .demo-feats{grid-template-columns:1fr}
+  .demo-feat:not(:last-child)::after{display:none}
+
+  /* FAQ */
+  .faq-a{padding-right:8px}
+  .faq-trigger{padding:18px 0}
+
+  /* Pull quote */
+  .quote-text{font-size:1rem}
+  .quote-avatar-row{flex-direction:column;gap:10px}
+  .quote-who{text-align:center}
+
+  /* Footer */
+  .footer-links{flex-wrap:wrap;justify-content:center;gap:14px}
 }
 </style>
 </head>
