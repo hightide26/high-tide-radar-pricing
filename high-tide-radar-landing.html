@@ -202,45 +202,51 @@ nav.scrolled{background:rgba(255,255,255,.98);box-shadow:var(--shadow-sm)}
 }
 
 /* ════════════════════════════════════════
-   HERO FLOATING CARDS
+   HERO 3-COL LAYOUT + FLOATING CARDS
 ════════════════════════════════════════ */
-.hero-floats{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:12px;
-  margin:36px auto 0;max-width:780px;
+.hero-middle-row{
+  display:flex;align-items:center;gap:36px;
+}
+.hero-center-col{
+  flex:1;min-width:0;text-align:center;
+}
+.hf-side-col{
+  width:190px;flex-shrink:0;
+  display:flex;flex-direction:column;gap:14px;
 }
 .hf-card{
-  display:inline-flex;align-items:center;gap:10px;
+  display:flex;align-items:flex-start;gap:10px;
   background:rgba(255,255,255,.07);
   border:1px solid rgba(255,255,255,.12);
   border-radius:14px;
-  padding:12px 18px;
+  padding:14px 16px;
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
   box-shadow:0 4px 24px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.1);
   animation:hf-float 4s ease-in-out infinite;
 }
-.hf-card:nth-child(2){animation-delay:.8s}
-.hf-card:nth-child(3){animation-delay:1.6s}
-.hf-card:nth-child(4){animation-delay:2.4s}
+.hf-side-col:last-child .hf-card:first-child{animation-delay:.5s}
+.hf-side-col:last-child .hf-card:last-child{animation-delay:1.5s}
+.hf-side-col:first-child .hf-card:last-child{animation-delay:1s}
 @keyframes hf-float{
   0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-5px)}
+  50%{transform:translateY(-6px)}
 }
 .hf-icon{
-  width:34px;height:34px;border-radius:10px;
+  width:32px;height:32px;border-radius:9px;
   background:rgba(8,145,178,.2);border:1px solid rgba(8,145,178,.3);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
 }
-.hf-icon svg{width:16px;height:16px;stroke:#22d3ee;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.hf-icon svg{width:15px;height:15px;stroke:#22d3ee;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .hf-pulse{
-  width:8px;height:8px;border-radius:50%;background:#22d3ee;flex-shrink:0;
+  width:8px;height:8px;border-radius:50%;background:#22d3ee;flex-shrink:0;margin-top:4px;
   box-shadow:0 0 8px rgba(34,211,238,.7);
   animation:hf-blink 1.6s ease-in-out infinite;
 }
 @keyframes hf-blink{0%,100%{opacity:1;box-shadow:0 0 8px rgba(34,211,238,.7)}50%{opacity:.4;box-shadow:0 0 4px rgba(34,211,238,.3)}}
 .hf-text-wrap{text-align:left}
-.hf-num{font-size:.88rem;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.2}
-.hf-label{font-size:.68rem;color:rgba(255,255,255,.5);line-height:1.35;font-weight:500}
+.hf-num{font-size:.82rem;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.2}
+.hf-label{font-size:.66rem;color:rgba(255,255,255,.5);line-height:1.4;font-weight:500;margin-top:2px}
 .hero-content{position:relative;z-index:1}
 .hero-eyebrow{
   display:flex;align-items:center;justify-content:center;gap:12px;
@@ -946,6 +952,9 @@ footer{
   nav{padding:0 20px}
   .nav-center{display:none}
   .ss-badge.top-right,.ss-badge.bottom-left{display:none}
+  .hero-middle-row{flex-direction:column;gap:24px}
+  .hf-side-col{width:100%;flex-direction:row;flex-wrap:wrap}
+  .hf-side-col .hf-card{flex:1;min-width:200px}
 }
 </style>
 </head>
@@ -965,7 +974,7 @@ footer{
   <div class="nav-right">
     <span class="nav-beta">
       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      Beta — 3 Spots Left
+      Beta — 4 Spots Left
     </span>
     <a href="#beta" class="btn btn-primary" style="padding:9px 22px;font-size:.78rem">
       Lock In Pricing →
@@ -977,79 +986,83 @@ footer{
 <section id="hero">
   <div class="container hero-content">
 
-    <!-- Eyebrow -->
-    <div class="hero-eyebrow fi">
-      <div class="hero-badge-live">
-        <span class="dot-live"></span>Beta Access Open
-      </div>
-      <span class="hero-spots-text">3 of 10 spots remaining</span>
-    </div>
+    <!-- 3-column: left cards | center text | right cards -->
+    <div class="hero-middle-row">
 
-    <!-- Headline -->
-    <h1 class="fi fi-delay-1">
-      Know Who's Searching.<br/>
-      <span class="grad-purple">Reach Them Everywhere.</span>
-    </h1>
+      <!-- Left cards -->
+      <div class="hf-side-col fi fi-delay-3">
+        <div class="hf-card">
+          <span class="hf-pulse"></span>
+          <div class="hf-text-wrap">
+            <div class="hf-num">127 people</div>
+            <div class="hf-label">searching for roofing in Houston right now</div>
+          </div>
+        </div>
+        <div class="hf-card">
+          <span class="hf-pulse"></span>
+          <div class="hf-text-wrap">
+            <div class="hf-num">3,482 contacts</div>
+            <div class="hf-label">identified across 3 active audiences</div>
+          </div>
+        </div>
+      </div>
 
-    <p class="hero-sub fi fi-delay-2">
-      Stop guessing who to market to. High Tide Radar identifies in-market buyers and website visitors by name, builds your ad audiences automatically, and reaches them through digital ads and direct mail. All in one platform.
-    </p>
+      <!-- Center text -->
+      <div class="hero-center-col">
+        <div class="hero-eyebrow fi">
+          <div class="hero-badge-live">
+            <span class="dot-live"></span>Beta Access Open
+          </div>
+          <span class="hero-spots-text">4 of 10 spots remaining</span>
+        </div>
+        <h1 class="fi fi-delay-1">
+          Know Who's Searching.<br/>
+          <span class="grad-purple">Reach Them Everywhere.</span>
+        </h1>
+        <p class="hero-sub fi fi-delay-2">
+          Stop guessing who to market to. High Tide Radar identifies in-market buyers and website visitors by name, builds your ad audiences automatically, and reaches them through digital ads and direct mail. All in one platform.
+        </p>
+        <div class="hero-ctas fi fi-delay-3">
+          <a href="#demo" class="btn btn-primary btn-xl">
+            Book a Demo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#beta" class="btn btn-ghost btn-xl">Lock In Beta Pricing</a>
+        </div>
+        <div class="hero-trust fi fi-delay-4">
+          <div class="trust-avatars">
+            <div class="t-avatar">HS</div>
+            <div class="t-avatar">MR</div>
+            <div class="t-avatar">JP</div>
+            <div class="t-avatar">+4</div>
+          </div>
+          <p class="trust-label"><strong>6 businesses</strong> already locked in at beta pricing. Closes at 10.</p>
+        </div>
+      </div>
 
-    <!-- CTAs -->
-    <div class="hero-ctas fi fi-delay-3">
-      <a href="#demo" class="btn btn-primary btn-xl">
-        Book a Demo
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="#beta" class="btn btn-ghost btn-xl">Lock In Beta Pricing</a>
-    </div>
+      <!-- Right cards -->
+      <div class="hf-side-col fi fi-delay-3">
+        <div class="hf-card">
+          <div class="hf-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="hf-text-wrap">
+            <div class="hf-num">280M+ profiles</div>
+            <div class="hf-label">consumer database, ready to target</div>
+          </div>
+        </div>
+        <div class="hf-card">
+          <div class="hf-icon">
+            <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <div class="hf-text-wrap">
+            <div class="hf-num">70% match rate</div>
+            <div class="hf-label">site visitor identification</div>
+          </div>
+        </div>
+      </div>
 
-    <!-- Trust -->
-    <div class="hero-trust fi fi-delay-4">
-      <div class="trust-avatars">
-        <div class="t-avatar">HS</div>
-        <div class="t-avatar">MR</div>
-        <div class="t-avatar">JP</div>
-        <div class="t-avatar">+4</div>
-      </div>
-      <p class="trust-label"><strong>7 businesses</strong> already locked in at beta pricing. Closes at 10.</p>
-    </div>
-
-    <!-- Floating stat cards -->
-    <div class="hero-floats fi fi-delay-4">
-      <div class="hf-card">
-        <span class="hf-pulse"></span>
-        <div class="hf-text-wrap">
-          <div class="hf-num">127 people</div>
-          <div class="hf-label">searching for roofing in Houston right now</div>
-        </div>
-      </div>
-      <div class="hf-card">
-        <div class="hf-icon">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <div class="hf-text-wrap">
-          <div class="hf-num">280M+ profiles</div>
-          <div class="hf-label">consumer database, ready to target</div>
-        </div>
-      </div>
-      <div class="hf-card">
-        <div class="hf-icon">
-          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        </div>
-        <div class="hf-text-wrap">
-          <div class="hf-num">70% match rate</div>
-          <div class="hf-label">site visitor identification</div>
-        </div>
-      </div>
-      <div class="hf-card">
-        <span class="hf-pulse"></span>
-        <div class="hf-text-wrap">
-          <div class="hf-num">3,482 contacts</div>
-          <div class="hf-label">identified across 3 active audiences</div>
-        </div>
-      </div>
-    </div>
+    </div><!-- /hero-middle-row -->
 
     <!-- VSL -->
     <div class="fi fi-delay-3" style="margin-top:52px">
@@ -1496,10 +1509,10 @@ footer{
           <div class="s-dot taken"></div><div class="s-dot taken"></div>
           <div class="s-dot taken"></div><div class="s-dot taken"></div>
           <div class="s-dot taken"></div><div class="s-dot taken"></div>
-          <div class="s-dot taken"></div>
-          <div class="s-dot open"></div><div class="s-dot open"></div><div class="s-dot open"></div>
+          <div class="s-dot open"></div><div class="s-dot open"></div>
+          <div class="s-dot open"></div><div class="s-dot open"></div>
         </div>
-        <div class="spots-label"><strong>3 spots open</strong> · 7 of 10 beta seats filled</div>
+        <div class="spots-label"><strong>4 spots open</strong> · 6 of 10 beta seats filled</div>
       </div>
 
       <div class="beta-cards fi fi-delay-3">
