@@ -884,6 +884,52 @@ footer{
 .footer-copy{font-size:.7rem;color:var(--text-s)}
 
 /* ════════════════════════════════════════
+   FAQ
+════════════════════════════════════════ */
+#faq{
+  padding:96px 0;
+  background:var(--bg-2);
+  border-top:1px solid var(--border);
+}
+.faq-inner{max-width:760px;margin:0 auto}
+.faq-list{display:flex;flex-direction:column;gap:0;margin-top:52px}
+.faq-item{
+  border-bottom:1px solid var(--border);
+}
+.faq-item:first-child{border-top:1px solid var(--border)}
+.faq-trigger{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:22px 0;
+  background:none;border:none;cursor:pointer;text-align:left;
+  font-family:'Inter',sans-serif;
+}
+.faq-q{
+  font-size:.97rem;font-weight:700;color:var(--text-h);
+  letter-spacing:-.01em;line-height:1.4;
+}
+.faq-chevron{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--bg-3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .25s ease;
+}
+.faq-chevron svg{width:13px;height:13px;stroke:var(--text-s);stroke-width:2.5;fill:none;transition:transform .25s ease}
+.faq-item.open .faq-chevron{background:var(--purple-light);border-color:var(--purple-mid)}
+.faq-item.open .faq-chevron svg{stroke:var(--purple);transform:rotate(180deg)}
+.faq-body{
+  display:grid;grid-template-rows:0fr;
+  transition:grid-template-rows .28s ease;
+}
+.faq-item.open .faq-body{grid-template-rows:1fr}
+.faq-body-inner{overflow:hidden}
+.faq-a{
+  font-size:.9rem;color:var(--text-m);line-height:1.75;
+  padding-bottom:22px;padding-right:48px;
+}
+.faq-a a{color:var(--purple);text-decoration:none}
+.faq-a a:hover{text-decoration:underline}
+
+/* ════════════════════════════════════════
    RESPONSIVE
 ════════════════════════════════════════ */
 @media(max-width:960px){
@@ -946,16 +992,16 @@ footer{
     </h1>
 
     <p class="hero-sub fi fi-delay-2">
-      High Tide Radar is audience intelligence built for businesses that are done wasting money on people who were never going to buy. Real intent data. Real identities. Every channel.
+      Stop guessing who to market to. High Tide Radar identifies in-market buyers and website visitors by name, builds your ad audiences automatically, and reaches them through digital ads and direct mail. All in one platform.
     </p>
 
     <!-- CTAs -->
     <div class="hero-ctas fi fi-delay-3">
-      <a href="#beta" class="btn btn-primary btn-xl">
-        Lock In Beta Pricing
+      <a href="#demo" class="btn btn-primary btn-xl">
+        Book a Demo
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href="#demo" class="btn btn-ghost btn-xl">Book a Demo</a>
+      <a href="#beta" class="btn btn-ghost btn-xl">Lock In Beta Pricing</a>
     </div>
 
     <!-- Trust -->
@@ -1550,6 +1596,104 @@ footer{
   </div>
 </section>
 
+<!-- ══ FAQ ══ -->
+<section id="faq">
+  <div class="container">
+    <div class="faq-inner">
+      <div class="section-header" style="text-align:left;margin-bottom:0">
+        <div class="fi"><span class="label">FAQ</span></div>
+        <h2 class="fi fi-delay-1" style="font-size:clamp(1.9rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.04em;line-height:1.16;margin-bottom:0">
+          Questions We Get Asked a Lot
+        </h2>
+      </div>
+
+      <div class="faq-list fi fi-delay-2">
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-q">How does visitor identification actually work?</span>
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-body"><div class="faq-body-inner">
+            <p class="faq-a">When someone visits your website, our pixel matches their device and behavioral data against our 280M+ consumer profile database. We identify the person behind the visit — name, email, phone, and mailing address — at up to a 70% match rate. The industry average is around 20%. You get a real contact record, not just an anonymous session.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-q">What's the difference between intent data and regular ad targeting?</span>
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-body"><div class="faq-body-inner">
+            <p class="faq-a">Standard ad targeting uses demographics — age, location, interests. Intent data uses real behavioral signals: people who have been actively searching for your specific service category across thousands of websites in the past 7–30 days. You're not targeting "homeowners in Houston." You're targeting homeowners in Houston who searched for "roof replacement cost" last Tuesday.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-q">Is this data compliant? Can I legally market to these people?</span>
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-body"><div class="faq-body-inner">
+            <p class="faq-a">Yes. All data is sourced from opted-in consumer and business databases and is fully compliant with TCPA, CAN-SPAM, Do Not Call regulations, GDPR, and CCPA. Contacts in the database have consented to marketing outreach through standard opt-in mechanisms. We also scrub against the National Do Not Call Registry on every export.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-q">What ad platforms does Radar connect to?</span>
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-body"><div class="faq-body-inner">
+            <p class="faq-a">Radar integrates directly with Facebook Ads, Google Ads, and TikTok Ads for custom audience uploads. The Pro plan also includes Connected TV and display advertising activation. Beyond digital, Pro includes fully managed direct mail campaigns — we design, print, and mail to your audience at $1.00 per piece with 3 mailer designs included per month.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-q">How long does it take to get set up?</span>
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-body"><div class="faq-body-inner">
+            <p class="faq-a">Most clients are live within 48–72 hours. We handle the entire setup: pixel installation, audience configuration, and ad platform connections. You'll have a 30-minute onboarding call where we map out your service area, intent topics, and audience strategy. After that, your first audience is typically ready to activate the same day.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-q">How is this different from using Facebook's built-in targeting?</span>
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-body"><div class="faq-body-inner">
+            <p class="faq-a">Facebook's targeting is based on interests and demographics inferred from platform behavior. Radar uses actual search and purchase intent data collected outside of any single platform — across 40,000+ topic categories. You also own the audience lists we build, so you can use the same contacts across Facebook, Google, TikTok, and direct mail simultaneously. Facebook can't do that.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-q">What's included in the beta pricing, and will it really stay locked?</span>
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-body"><div class="faq-body-inner">
+            <p class="faq-a">Beta pricing is $1,500/mo for Radar and $2,500/mo for Radar Pro. Yes — it's genuinely locked for life. When pricing increases for new clients after beta closes, your rate stays the same as long as you remain a client. There's no long-term commitment required to join beta, and you can cancel with 30 days' notice at any time.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-q">Do I need a developer to install the visitor ID pixel?</span>
+            <span class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="faq-body"><div class="faq-body-inner">
+            <p class="faq-a">No. If you can paste a snippet into your website's header — or if you have access to Google Tag Manager — we can have the pixel live in under 10 minutes. We walk you through it on the onboarding call, or we'll do it for you if you give us temporary site access. No developer needed.</p>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ══ FOOTER ══ -->
 <footer>
   <div class="container">
@@ -1754,6 +1898,24 @@ window.addEventListener('scroll', () => {
   shell.addEventListener('mousemove', resetHide);
   shell.addEventListener('touchstart', resetHide, { passive: true });
 })();
+
+// ── FAQ Accordion ──
+document.querySelectorAll('.faq-trigger').forEach(trigger => {
+  trigger.addEventListener('click', () => {
+    const item = trigger.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item.open').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.faq-trigger').setAttribute('aria-expanded','false');
+    });
+    // Open clicked (unless it was already open)
+    if (!isOpen) {
+      item.classList.add('open');
+      trigger.setAttribute('aria-expanded','true');
+    }
+  });
+});
 </script>
 </body>
 </html>
