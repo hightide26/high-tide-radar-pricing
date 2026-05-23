@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>High Tide Radar — Know Who's Searching. Reach Them First.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js"></script>
+<style>
+:root{
+  --navy:#050c18;
+  --navy-2:#080f1e;
+  --navy-3:#0c1526;
+  --navy-4:#111d30;
+  --teal:#3dd6f5;
+  --teal-2:#5de8ff;
+  --teal-glow:rgba(61,214,245,.18);
+  --teal-glow-2:rgba(61,214,245,.08);
+  --gold:#f0b429;
+  --text-h:#f0f4f8;
+  --text-m:#9aafc6;
+  --text-s:#5e7a99;
+  --border:rgba(61,214,245,.12);
+  --border-2:rgba(255,255,255,.06);
+  --radius:14px;
+  --radius-lg:22px;
+  --transition:0.55s cubic-bezier(.23,1,.32,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--navy);
+  color:var(--text-h);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* ── GRID TEXTURE ── */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(61,214,245,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(61,214,245,.03) 1px,transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ── GLOW BLOBS ── */
+.blob{
+  position:fixed;
+  border-radius:50%;
+  filter:blur(130px);
+  pointer-events:none;
+  z-index:0;
+}
+.blob-1{width:700px;height:700px;background:rgba(61,214,245,.07);top:-200px;right:-200px;}
+.blob-2{width:500px;height:500px;background:rgba(61,214,245,.05);bottom:20%;left:-150px;}
+.blob-3{width:400px;height:400px;background:rgba(61,214,245,.04);top:50%;right:10%;}
+
+/* ── FADE-IN SYSTEM ── */
+.fi{opacity:0;transform:translateY(32px);transition:opacity var(--transition),transform var(--transition)}
+.fi.visible{opacity:1;transform:translateY(0)}
+.fi-delay-1{transition-delay:.1s}
+.fi-delay-2{transition-delay:.2s}
+.fi-delay-3{transition-delay:.3s}
+.fi-delay-4{transition-delay:.4s}
+.fi-delay-5{transition-delay:.5s}
+.fi-delay-6{transition-delay:.6s}
+
+/* ── LAYOUT ── */
+section{position:relative;z-index:1}
+.container{max-width:1160px;margin:0 auto;padding:0 28px}
+.section-label{
+  display:inline-block;
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--teal);
+  padding:5px 14px;
+  border:1px solid var(--border);
+  border-radius:100px;
+  background:var(--teal-glow-2);
+  margin-bottom:20px;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:100;
+  padding:18px 40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(5,12,24,.8);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border-2);
+}
+.nav-logo img{height:32px}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-beta{
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--gold);
+  padding:5px 12px;
+  border:1px solid rgba(240,180,41,.25);
+  border-radius:100px;
+  background:rgba(240,180,41,.08);
+  animation:pulse-gold 2.5s ease-in-out infinite;
+}
+@keyframes pulse-gold{
+  0%,100%{box-shadow:0 0 0 0 rgba(240,180,41,.3)}
+  50%{box-shadow:0 0 0 6px rgba(240,180,41,0)}
+}
+.btn-primary{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:11px 24px;
+  background:var(--teal);
+  color:#050c18;
+  font-size:.82rem;
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  border-radius:100px;
+  text-decoration:none;
+  transition:all .3s ease;
+}
+.btn-primary:hover{background:var(--teal-2);transform:translateY(-1px);box-shadow:0 8px 30px rgba(61,214,245,.35)}
+.btn-primary svg{width:14px;height:14px}
+.btn-ghost{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:11px 24px;
+  border:1px solid var(--border);
+  color:var(--text-h);
+  font-size:.82rem;
+  font-weight:600;
+  letter-spacing:.04em;
+  border-radius:100px;
+  text-decoration:none;
+  transition:all .3s ease;
+  background:transparent;
+}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-glow-2)}
+
+/* ── HERO ── */
+#hero{
+  padding:130px 0 80px;
+  background:radial-gradient(ellipse 80% 50% at 50% 0%, rgba(61,214,245,.09) 0%, transparent 65%);
+  text-align:center;
+}
+.hero-inner{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0;
+}
+.hero-copy{
+  max-width:780px;
+  margin:0 auto;
+}
+.hero-eyebrow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:28px;
+}
+.hero-badge{
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--teal);
+  padding:5px 14px 5px 10px;
+  border:1px solid var(--border);
+  border-radius:100px;
+  background:var(--teal-glow-2);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.hero-badge::before{
+  content:'';
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--teal);
+  animation:blink 1.8s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-spots{
+  font-size:.72rem;
+  color:var(--gold);
+  font-weight:600;
+  letter-spacing:.06em;
+}
+h1{
+  font-size:clamp(2.6rem,5.5vw,4.4rem);
+  font-weight:900;
+  line-height:1.08;
+  letter-spacing:-.04em;
+  margin-bottom:22px;
+}
+.grad{
+  background:linear-gradient(135deg,var(--teal) 0%,var(--teal-2) 50%,#a8edff 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  font-size:1.08rem;
+  color:var(--text-m);
+  line-height:1.7;
+  margin-bottom:36px;
+  max-width:600px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.hero-ctas{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:36px;
+  justify-content:center;
+}
+.hero-trust{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  padding-top:24px;
+  border-top:1px solid var(--border-2);
+  margin-bottom:64px;
+}
+.trust-dots{
+  display:flex;
+  gap:4px;
+}
+.trust-dot{
+  width:28px;height:28px;
+  border-radius:50%;
+  background:var(--navy-3);
+  border:2px solid var(--navy-2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;
+  font-weight:700;
+  color:var(--teal);
+}
+.trust-dot:not(:first-child){margin-left:-8px}
+.trust-text{
+  font-size:.8rem;
+  color:var(--text-m);
+}
+.trust-text strong{color:var(--text-h)}
+
+/* ── CUSTOM VIDEO PLAYER ── */
+.player-wrap{
+  width:100%;
+  max-width:960px;
+  margin:0 auto;
+  position:relative;
+}
+.player-shell{
+  position:relative;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  border:1px solid rgba(61,214,245,.18);
+  box-shadow:
+    0 0 0 1px rgba(61,214,245,.06),
+    0 40px 100px rgba(0,0,0,.7),
+    0 0 160px rgba(61,214,245,.14);
+  background:#000;
+  cursor:pointer;
+}
+.player-shell video{
+  width:100%;
+  display:block;
+  border-radius:var(--radius-lg);
+}
+/* Prevent right-click download */
+.player-shell{-webkit-user-select:none;user-select:none}
+
+/* Play overlay (shown before first play) */
+.play-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  background:linear-gradient(160deg,rgba(5,12,24,.65) 0%,rgba(5,12,24,.45) 100%);
+  backdrop-filter:blur(2px);
+  transition:opacity .4s ease;
+  border-radius:var(--radius-lg);
+  z-index:10;
+}
+.play-overlay.hidden{opacity:0;pointer-events:none}
+.big-play-btn{
+  width:84px;height:84px;
+  border-radius:50%;
+  background:var(--teal);
+  border:none;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:
+    0 0 0 20px rgba(61,214,245,.13),
+    0 0 0 40px rgba(61,214,245,.06),
+    0 8px 32px rgba(61,214,245,.4);
+  transition:all .3s ease;
+  flex-shrink:0;
+}
+.big-play-btn:hover{
+  transform:scale(1.1);
+  box-shadow:
+    0 0 0 24px rgba(61,214,245,.16),
+    0 0 0 48px rgba(61,214,245,.07),
+    0 12px 40px rgba(61,214,245,.55);
+}
+.big-play-btn svg{width:32px;height:32px;fill:#050c18;margin-left:5px}
+.play-overlay-label{
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.7);
+}
+
+/* Controls bar */
+.controls-bar{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  padding:12px 18px 14px;
+  background:linear-gradient(0deg, rgba(5,12,24,.95) 0%, rgba(5,12,24,.6) 80%, transparent 100%);
+  display:flex;
+  align-items:center;
+  gap:14px;
+  opacity:0;
+  transition:opacity .3s ease;
+  z-index:11;
+  border-radius:0 0 var(--radius-lg) var(--radius-lg);
+}
+.player-shell:hover .controls-bar,
+.player-shell.controls-visible .controls-bar{opacity:1}
+.player-shell.paused .controls-bar{opacity:1}
+
+/* Play/Pause btn */
+.ctrl-btn{
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:4px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--teal);
+  flex-shrink:0;
+  transition:color .2s,transform .2s;
+}
+.ctrl-btn:hover{color:var(--teal-2);transform:scale(1.15)}
+.ctrl-btn svg{width:20px;height:20px;fill:currentColor;display:block}
+.ctrl-btn.sm svg{width:16px;height:16px}
+
+/* Progress bar */
+.progress-wrap{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  cursor:pointer;
+  padding:8px 0; /* larger invisible hit target */
+  margin:-8px 0;
+}
+.progress-bar{
+  position:relative;
+  height:4px;
+  background:rgba(255,255,255,.15);
+  border-radius:100px;
+  cursor:pointer;
+  transition:height .2s ease;
+}
+.progress-wrap:hover .progress-bar{height:6px}
+.progress-fill{
+  height:100%;
+  background:var(--teal);
+  border-radius:100px;
+  position:relative;
+  pointer-events:none;
+  transition:width .1s linear;
+}
+.progress-fill::after{
+  content:'';
+  position:absolute;
+  right:-5px;top:50%;transform:translateY(-50%);
+  width:12px;height:12px;
+  border-radius:50%;
+  background:var(--teal);
+  box-shadow:0 0 8px rgba(61,214,245,.6);
+  opacity:0;
+  transition:opacity .2s;
+}
+.progress-wrap:hover .progress-fill::after{opacity:1}
+.time-display{
+  font-size:.65rem;
+  color:rgba(255,255,255,.5);
+  font-weight:500;
+  letter-spacing:.04em;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+/* Volume */
+.volume-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+.volume-slider{
+  -webkit-appearance:none;
+  appearance:none;
+  width:70px;
+  height:4px;
+  border-radius:100px;
+  background:rgba(255,255,255,.15);
+  outline:none;
+  cursor:pointer;
+  transition:all .2s;
+}
+.volume-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:12px;height:12px;
+  border-radius:50%;
+  background:var(--teal);
+  cursor:pointer;
+  box-shadow:0 0 6px rgba(61,214,245,.5);
+}
+.volume-slider:hover{height:6px}
+
+/* Fullscreen btn stays right */
+.ctrl-fullscreen{margin-left:2px}
+
+/* Teal corner accents on player */
+.player-corners .pc{
+  position:absolute;
+  width:22px;height:22px;
+  border-color:rgba(61,214,245,.5);
+  border-style:solid;
+  z-index:12;
+  pointer-events:none;
+}
+.player-corners .pc-tl{top:12px;left:12px;border-width:2px 0 0 2px;border-radius:3px 0 0 0}
+.player-corners .pc-tr{top:12px;right:12px;border-width:2px 2px 0 0;border-radius:0 3px 0 0}
+.player-corners .pc-bl{bottom:12px;left:12px;border-width:0 0 2px 2px;border-radius:0 0 0 3px}
+.player-corners .pc-br{bottom:12px;right:12px;border-width:0 2px 2px 0;border-radius:0 0 3px 0}
+
+/* "Watch the VSL" tag above player */
+.vsl-tag-above{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:20px;
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--gold);
+  padding:5px 14px;
+  border:1px solid rgba(240,180,41,.2);
+  border-radius:100px;
+  background:rgba(240,180,41,.07);
+}
+.vsl-scan-line{
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--teal),transparent);
+  animation:scan 4s ease-in-out infinite;
+  z-index:9;
+  pointer-events:none;
+}
+@keyframes scan{
+  0%{top:0%;opacity:1}
+  90%{top:100%;opacity:.2}
+  100%{top:0%;opacity:0}
+}
+
+/* OLD vsl-label kept so nothing breaks */
+.vsl-label{
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--text-m);
+}
+.vsl-corners .c{
+  position:absolute;
+  width:20px;height:20px;
+  border-color:var(--teal);
+  border-style:solid;
+  opacity:.5;
+}
+.vsl-corners .c-tl{top:14px;left:14px;border-width:2px 0 0 2px}
+.vsl-corners .c-tr{top:14px;right:14px;border-width:2px 2px 0 0}
+.vsl-corners .c-bl{bottom:14px;left:14px;border-width:0 0 2px 2px}
+.vsl-corners .c-br{bottom:14px;right:14px;border-width:0 2px 2px 0}
+.vsl-tag{
+  position:absolute;
+  top:-12px;right:24px;
+  background:var(--gold);
+  color:#1a0f00;
+  font-size:.65rem;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:4px 12px;
+  border-radius:100px;
+}
+.vsl-scan{
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--teal),transparent);
+  animation:scan 3s ease-in-out infinite;
+}
+@keyframes scan{
+  0%{top:0;opacity:1}
+  90%{top:100%;opacity:.3}
+  100%{top:0;opacity:0}
+}
+
+/* ── STATS BAR ── */
+#stats{
+  padding:28px 0;
+  border-top:1px solid var(--border-2);
+  border-bottom:1px solid var(--border-2);
+  background:rgba(8,15,30,.7);
+}
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+}
+.stat-item{
+  text-align:center;
+  padding:20px 28px;
+  position:relative;
+}
+.stat-item:not(:last-child)::after{
+  content:'';
+  position:absolute;
+  right:0;top:20%;bottom:20%;
+  width:1px;
+  background:var(--border-2);
+}
+.stat-num{
+  font-size:2rem;
+  font-weight:900;
+  letter-spacing:-.04em;
+  background:linear-gradient(135deg,var(--teal),var(--teal-2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1;
+  margin-bottom:6px;
+}
+.stat-label{
+  font-size:.75rem;
+  color:var(--text-m);
+  font-weight:500;
+  letter-spacing:.03em;
+}
+
+/* ── PROBLEM ── */
+#problem{
+  padding:120px 0;
+}
+.problem-header{text-align:center;margin-bottom:64px}
+.problem-header h2{
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1.15;
+  margin-bottom:16px;
+}
+.problem-header p{
+  font-size:1.05rem;
+  color:var(--text-m);
+  max-width:540px;
+  margin:0 auto;
+}
+.problem-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+.problem-card{
+  background:var(--navy-2);
+  border:1px solid var(--border-2);
+  border-radius:var(--radius-lg);
+  padding:36px 32px;
+  position:relative;
+  overflow:hidden;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.problem-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,rgba(61,214,245,.3),transparent);
+}
+.problem-card:hover{border-color:rgba(61,214,245,.2);transform:translateY(-4px)}
+.problem-icon{
+  width:48px;height:48px;
+  border-radius:12px;
+  background:rgba(61,214,245,.08);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+  font-size:1.4rem;
+}
+.problem-card h3{
+  font-size:1.15rem;
+  font-weight:700;
+  margin-bottom:10px;
+  letter-spacing:-.01em;
+}
+.problem-card p{
+  font-size:.88rem;
+  color:var(--text-m);
+  line-height:1.65;
+}
+.problem-stat{
+  margin-top:18px;
+  padding:10px 14px;
+  background:rgba(61,214,245,.05);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:.78rem;
+  color:var(--teal);
+  font-weight:600;
+}
+
+/* ── SOLUTION ── */
+#solution{
+  padding:80px 0 120px;
+  text-align:center;
+  background:radial-gradient(ellipse 60% 40% at 50% 50%, rgba(61,214,245,.05) 0%, transparent 70%);
+}
+.solution-eyebrow{margin-bottom:20px}
+.solution-headline{
+  font-size:clamp(2.4rem,5vw,4.5rem);
+  font-weight:900;
+  letter-spacing:-.04em;
+  line-height:1.05;
+  margin-bottom:24px;
+}
+.solution-sub{
+  font-size:1.1rem;
+  color:var(--text-m);
+  max-width:600px;
+  margin:0 auto 52px;
+  line-height:1.7;
+}
+.solution-steps{
+  display:flex;
+  justify-content:center;
+  gap:0;
+  position:relative;
+}
+.solution-steps::before{
+  content:'';
+  position:absolute;
+  top:24px;left:16.66%;right:16.66%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),var(--teal),var(--border),transparent);
+}
+.step{
+  flex:1;
+  max-width:280px;
+  text-align:center;
+  padding:0 28px;
+  position:relative;
+}
+.step-num{
+  width:48px;height:48px;
+  border-radius:50%;
+  background:var(--navy-3);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;
+  font-weight:800;
+  color:var(--teal);
+  letter-spacing:.04em;
+  margin:0 auto 20px;
+  position:relative;
+  z-index:1;
+}
+.step-num.active{
+  background:var(--teal);
+  color:#050c18;
+  border-color:var(--teal);
+  box-shadow:0 0 20px rgba(61,214,245,.4);
+}
+.step h3{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.step p{font-size:.85rem;color:var(--text-m);line-height:1.6}
+
+/* ── FEATURES ── */
+#features{padding:120px 0}
+.features-header{margin-bottom:72px}
+.features-header h2{
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1.15;
+  margin-bottom:16px;
+}
+.features-header p{font-size:1rem;color:var(--text-m);max-width:500px}
+.feature-block{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:72px;
+  align-items:center;
+  margin-bottom:96px;
+}
+.feature-block.reverse{direction:rtl}
+.feature-block.reverse>*{direction:ltr}
+.feature-copy .section-label{display:inline-block}
+.feature-copy h3{
+  font-size:clamp(1.6rem,3vw,2.2rem);
+  font-weight:800;
+  letter-spacing:-.03em;
+  line-height:1.2;
+  margin-bottom:16px;
+}
+.feature-copy p{
+  font-size:.95rem;
+  color:var(--text-m);
+  line-height:1.72;
+  margin-bottom:24px;
+}
+.feature-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.feature-list li{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:.88rem;color:var(--text-m);
+}
+.feature-list li::before{
+  content:'✓';
+  color:var(--teal);
+  font-weight:700;
+  flex-shrink:0;
+  margin-top:1px;
+}
+.feature-visual{
+  background:var(--navy-2);
+  border:1px solid var(--border-2);
+  border-radius:var(--radius-lg);
+  padding:36px;
+  min-height:340px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  position:relative;
+  overflow:hidden;
+}
+.feature-visual::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--teal),transparent);
+}
+/* Intent data bars */
+.intent-bars{display:flex;flex-direction:column;gap:12px;flex:1;justify-content:center}
+.intent-bar-row{display:flex;align-items:center;gap:12px}
+.intent-topic{width:160px;font-size:.75rem;color:var(--text-m);text-align:right;flex-shrink:0}
+.intent-bar-wrap{flex:1;background:rgba(255,255,255,.04);border-radius:100px;height:8px;overflow:hidden}
+.intent-bar{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--teal),var(--teal-2));transform-origin:left}
+.intent-pct{width:36px;font-size:.72rem;color:var(--teal);font-weight:700;flex-shrink:0}
+/* Channel pills */
+.channel-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;flex:1;align-items:center}
+.channel-pill{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 16px;
+  background:var(--navy-3);
+  border:1px solid var(--border-2);
+  border-radius:100px;
+  font-size:.78rem;
+  font-weight:600;
+  color:var(--text-h);
+  transition:all .3s ease;
+}
+.channel-pill:hover{border-color:var(--teal);color:var(--teal)}
+.channel-pill.active{border-color:rgba(61,214,245,.4);color:var(--teal);background:rgba(61,214,245,.06)}
+.ch-dot{width:8px;height:8px;border-radius:50%}
+/* Visitor ID mock */
+.visitor-rows{display:flex;flex-direction:column;gap:10px;flex:1;justify-content:center}
+.visitor-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;
+  background:var(--navy-3);
+  border:1px solid var(--border-2);
+  border-radius:10px;
+}
+.v-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--navy-4);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:700;color:var(--teal);
+  flex-shrink:0;
+}
+.v-info{flex:1}
+.v-name{font-size:.8rem;font-weight:600;color:var(--text-h)}
+.v-detail{font-size:.7rem;color:var(--text-s)}
+.v-signal{
+  font-size:.65rem;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:3px 8px;border-radius:100px;
+}
+.v-signal.hot{background:rgba(61,214,245,.12);color:var(--teal);border:1px solid var(--border)}
+.v-signal.warm{background:rgba(240,180,41,.08);color:var(--gold);border:1px solid rgba(240,180,41,.2)}
+.v-signal.new{background:rgba(255,255,255,.04);color:var(--text-m);border:1px solid var(--border-2)}
+
+/* ── BIG STAT ── */
+#bigstat{
+  padding:100px 0;
+  text-align:center;
+  border-top:1px solid var(--border-2);
+  border-bottom:1px solid var(--border-2);
+}
+.bigstat-num{
+  font-size:clamp(100px,18vw,200px);
+  font-weight:900;
+  letter-spacing:-.06em;
+  line-height:.9;
+  background:linear-gradient(135deg,var(--teal) 0%,var(--teal-2) 40%,rgba(168,237,255,.6) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:16px;
+}
+.bigstat-label{
+  font-size:1.2rem;
+  color:var(--text-m);
+  max-width:520px;
+  margin:0 auto;
+  font-weight:400;
+}
+.bigstat-label strong{color:var(--text-h)}
+
+/* ── WHO IT'S FOR ── */
+#audience{padding:120px 0}
+.audience-header{text-align:center;margin-bottom:64px}
+.audience-header h2{
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1.15;
+  margin-bottom:16px;
+}
+.audience-header p{font-size:1rem;color:var(--text-m);max-width:500px;margin:0 auto}
+.audience-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.audience-card{
+  background:var(--navy-2);
+  border:1px solid var(--border-2);
+  border-radius:var(--radius-lg);
+  padding:40px 32px;
+  position:relative;
+  overflow:hidden;
+  transition:all .4s ease;
+}
+.audience-card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(61,214,245,.04) 0%,transparent 60%);
+  opacity:0;
+  transition:opacity .4s ease;
+}
+.audience-card:hover{border-color:rgba(61,214,245,.25);transform:translateY(-6px)}
+.audience-card:hover::after{opacity:1}
+.aud-icon{
+  font-size:2.2rem;
+  margin-bottom:20px;
+  display:block;
+}
+.audience-card h3{
+  font-size:1.15rem;
+  font-weight:700;
+  margin-bottom:8px;
+  letter-spacing:-.01em;
+}
+.aud-tag{
+  display:inline-block;
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--teal);
+  padding:3px 10px;
+  border:1px solid var(--border);
+  border-radius:100px;
+  background:var(--teal-glow-2);
+  margin-bottom:16px;
+}
+.audience-card p{font-size:.88rem;color:var(--text-m);line-height:1.65}
+.aud-use-cases{
+  margin-top:20px;
+  padding-top:20px;
+  border-top:1px solid var(--border-2);
+  display:flex;flex-direction:column;gap:8px;
+}
+.aud-uc{
+  display:flex;align-items:center;gap:8px;
+  font-size:.78rem;color:var(--text-s);
+}
+.aud-uc::before{content:'→';color:var(--teal);font-size:.8rem}
+
+/* ── HOW IT WORKS ── */
+#howit{
+  padding:120px 0;
+  background:var(--navy-2);
+  border-top:1px solid var(--border-2);
+  border-bottom:1px solid var(--border-2);
+}
+.howit-header{text-align:center;margin-bottom:72px}
+.howit-header h2{
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1.15;
+  margin-bottom:16px;
+}
+.howit-header p{font-size:1rem;color:var(--text-m);max-width:520px;margin:0 auto}
+.steps-track{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:40px;
+  position:relative;
+}
+.steps-track::before{
+  content:'';
+  position:absolute;
+  top:36px;left:calc(16.66% + 20px);right:calc(16.66% + 20px);
+  height:1px;
+  background:linear-gradient(90deg,var(--teal) 0%,rgba(61,214,245,.2) 100%);
+}
+.step-card{
+  background:var(--navy);
+  border:1px solid var(--border-2);
+  border-radius:var(--radius-lg);
+  padding:36px 32px;
+  text-align:center;
+  position:relative;
+}
+.step-card-num{
+  width:72px;height:72px;
+  border-radius:50%;
+  border:1px solid var(--border);
+  background:var(--navy-2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;
+  margin:0 auto 20px;
+  position:relative;
+  z-index:1;
+}
+.step-card h3{font-size:1.1rem;font-weight:700;margin-bottom:10px;letter-spacing:-.01em}
+.step-card p{font-size:.88rem;color:var(--text-m);line-height:1.65}
+.step-card-badge{
+  position:absolute;
+  top:-10px;right:20px;
+  font-size:.62rem;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:3px 10px;
+  border-radius:100px;
+}
+.badge-live{background:rgba(61,214,245,.12);color:var(--teal);border:1px solid var(--border)}
+.badge-daily{background:rgba(240,180,41,.08);color:var(--gold);border:1px solid rgba(240,180,41,.2)}
+.badge-auto{background:rgba(255,255,255,.04);color:var(--text-m);border:1px solid var(--border-2)}
+
+/* ── BETA CTA ── */
+#beta{
+  padding:120px 0;
+  background:radial-gradient(ellipse 60% 50% at 50% 50%, rgba(61,214,245,.07) 0%, transparent 70%);
+}
+.beta-inner{text-align:center;max-width:800px;margin:0 auto}
+.beta-inner h2{
+  font-size:clamp(2rem,4.5vw,3.5rem);
+  font-weight:900;
+  letter-spacing:-.04em;
+  line-height:1.1;
+  margin-bottom:16px;
+}
+.beta-inner > p{
+  font-size:1rem;
+  color:var(--text-m);
+  max-width:560px;
+  margin:0 auto 52px;
+  line-height:1.7;
+}
+
+/* Spots visualizer */
+.spots-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  margin-bottom:52px;
+}
+.spots-dots{
+  display:flex;gap:10px;
+}
+.spot-dot{
+  width:18px;height:18px;border-radius:50%;
+  border:1px solid rgba(61,214,245,.3);
+  transition:all .3s ease;
+}
+.spot-dot.taken{
+  background:rgba(61,214,245,.15);
+  border-color:rgba(61,214,245,.3);
+}
+.spot-dot.open{
+  background:var(--teal);
+  border-color:var(--teal);
+  box-shadow:0 0 10px rgba(61,214,245,.5);
+  animation:spot-pulse 2s ease-in-out infinite;
+}
+@keyframes spot-pulse{
+  0%,100%{box-shadow:0 0 10px rgba(61,214,245,.5),0 0 0 0 rgba(61,214,245,.3)}
+  50%{box-shadow:0 0 16px rgba(61,214,245,.7),0 0 0 6px rgba(61,214,245,0)}
+}
+.spots-label{
+  font-size:.8rem;
+  color:var(--text-m);
+  font-weight:500;
+}
+.spots-label strong{color:var(--gold)}
+
+/* Beta pricing cards */
+.beta-cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-bottom:40px;
+}
+.beta-card{
+  background:var(--navy-2);
+  border:1px solid var(--border-2);
+  border-radius:var(--radius-lg);
+  padding:36px 32px;
+  text-align:left;
+  position:relative;
+  transition:all .3s ease;
+}
+.beta-card:hover{border-color:rgba(61,214,245,.2);transform:translateY(-3px)}
+.beta-card.featured{
+  border-color:rgba(61,214,245,.3);
+  background:linear-gradient(160deg,rgba(61,214,245,.06) 0%,var(--navy-2) 60%);
+}
+.beta-card-badge{
+  position:absolute;
+  top:-11px;left:50%;transform:translateX(-50%);
+  white-space:nowrap;
+  font-size:.63rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 14px;border-radius:100px;
+}
+.featured-badge{background:var(--teal);color:#050c18}
+.bc-name{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-m);margin-bottom:10px}
+.bc-price{
+  display:flex;align-items:baseline;gap:4px;
+  margin-bottom:4px;
+}
+.bc-dollar{font-size:1.4rem;font-weight:700;color:var(--text-h)}
+.bc-amount{font-size:2.6rem;font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--text-h)}
+.bc-period{font-size:.85rem;color:var(--text-m)}
+.bc-future{
+  font-size:.78rem;
+  color:var(--text-s);
+  margin-bottom:20px;
+}
+.bc-future span{text-decoration:line-through;color:var(--text-s)}
+.bc-divider{height:1px;background:var(--border-2);margin:20px 0}
+.bc-features{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.bc-features li{display:flex;align-items:flex-start;gap:9px;font-size:.82rem;color:var(--text-m)}
+.bc-features li::before{content:'✓';color:var(--teal);font-weight:700;flex-shrink:0}
+.bc-lock{
+  font-size:.7rem;
+  color:var(--teal);
+  font-weight:600;
+  letter-spacing:.04em;
+  padding:6px 12px;
+  background:rgba(61,214,245,.06);
+  border:1px solid var(--border);
+  border-radius:8px;
+  text-align:center;
+}
+
+.beta-cta-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+.btn-xl{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:18px 44px;
+  background:var(--teal);
+  color:#050c18;
+  font-size:.95rem;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  border-radius:100px;
+  text-decoration:none;
+  transition:all .3s ease;
+  box-shadow:0 0 0 0 rgba(61,214,245,.4);
+}
+.btn-xl:hover{background:var(--teal-2);transform:translateY(-2px);box-shadow:0 12px 40px rgba(61,214,245,.4),0 0 0 8px rgba(61,214,245,.08)}
+.btn-xl svg{width:18px;height:18px}
+.cta-fine{font-size:.75rem;color:var(--text-s)}
+
+/* ── DEMO ── */
+#demo{
+  padding:100px 0;
+  background:var(--navy-2);
+  border-top:1px solid var(--border-2);
+}
+.demo-inner{
+  max-width:640px;
+  margin:0 auto;
+  text-align:center;
+}
+.demo-inner h2{
+  font-size:clamp(1.8rem,3.5vw,2.8rem);
+  font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1.15;
+  margin-bottom:16px;
+}
+.demo-inner p{
+  font-size:.95rem;
+  color:var(--text-m);
+  line-height:1.7;
+  margin-bottom:36px;
+}
+.demo-card{
+  background:var(--navy);
+  border:1px solid var(--border-2);
+  border-radius:var(--radius-lg);
+  padding:40px;
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+}
+.demo-features{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  padding:16px 0;
+  border-top:1px solid var(--border-2);
+  border-bottom:1px solid var(--border-2);
+}
+.demo-feat{
+  text-align:center;
+  padding:12px;
+  position:relative;
+}
+.demo-feat:not(:last-child)::after{
+  content:'';
+  position:absolute;
+  right:0;top:20%;bottom:20%;
+  width:1px;
+  background:var(--border-2);
+}
+.demo-feat-icon{font-size:1.4rem;margin-bottom:6px}
+.demo-feat-text{font-size:.72rem;color:var(--text-m);font-weight:500}
+
+/* ── FOOTER ── */
+footer{
+  padding:60px 0 40px;
+  border-top:1px solid var(--border-2);
+}
+.footer-inner{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:28px;
+  text-align:center;
+}
+.footer-logo img{height:28px}
+.footer-links{
+  display:flex;gap:32px;
+}
+.footer-links a{
+  font-size:.8rem;
+  color:var(--text-s);
+  text-decoration:none;
+  transition:color .3s ease;
+  letter-spacing:.04em;
+}
+.footer-links a:hover{color:var(--teal)}
+.footer-legal{
+  font-size:.72rem;
+  color:var(--text-s);
+  max-width:520px;
+  line-height:1.6;
+}
+.footer-copy{
+  font-size:.72rem;
+  color:var(--text-s);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-item:nth-child(2)::after{display:none}
+  .problem-cards{grid-template-columns:1fr}
+  .feature-block{grid-template-columns:1fr;gap:40px}
+  .feature-block.reverse{direction:ltr}
+  .audience-grid{grid-template-columns:1fr}
+  .steps-track{grid-template-columns:1fr;gap:20px}
+  .steps-track::before{display:none}
+  .beta-cards{grid-template-columns:1fr}
+  .demo-features{grid-template-columns:1fr}
+  .demo-feat:not(:last-child)::after{display:none}
+  nav{padding:14px 20px}
+  .nav-beta{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Glow blobs -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a class="nav-logo" href="#">
+    <img src="radar-logo.svg" alt="High Tide Radar"/>
+  </a>
+  <div class="nav-right">
+    <span class="nav-beta">⚡ Beta — 3 Spots Left</span>
+    <a href="#demo" class="btn-ghost" style="padding:9px 20px;font-size:.78rem">See How It Works</a>
+    <a href="#beta" class="btn-primary" style="padding:9px 20px;font-size:.78rem">
+      Book a Demo
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- Copy -->
+      <div class="hero-copy">
+        <div class="hero-eyebrow fi">
+          <div class="hero-badge">Beta Access Open</div>
+          <span class="hero-spots">3 of 10 spots remaining</span>
+        </div>
+
+        <h1 class="fi fi-delay-1">
+          Know Who's Searching<br/>
+          for Your Service.<br/>
+          <span class="grad">Reach Them First.</span>
+        </h1>
+
+        <p class="hero-sub fi fi-delay-2">
+          High Tide Radar is audience intelligence for businesses that can't afford to waste money on people who don't need what they sell. Intent data. Visitor identity. Multi-channel activation. All in one platform.
+        </p>
+
+        <div class="hero-ctas fi fi-delay-3">
+          <a href="#beta" class="btn-primary">
+            Lock In Beta Pricing
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#demo" class="btn-ghost">Book a Demo</a>
+        </div>
+
+        <div class="hero-trust fi fi-delay-4">
+          <div class="trust-dots">
+            <div class="trust-dot">HS</div>
+            <div class="trust-dot">MR</div>
+            <div class="trust-dot">JP</div>
+            <div class="trust-dot">+4</div>
+          </div>
+          <p class="trust-text"><strong>7 businesses</strong> already locked in. Beta closes at 10.</p>
+        </div>
+      </div>
+
+      <!-- VSL Player -->
+      <div class="fi fi-delay-3" style="width:100%">
+        <div style="text-align:center;margin-bottom:20px">
+          <span class="vsl-tag-above">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--gold)"><polygon points="5,3 19,12 5,21"/></svg>
+            Watch the VSL
+          </span>
+        </div>
+        <div class="player-wrap">
+          <div class="player-shell paused" id="playerShell">
+            <!-- Teal corner accents -->
+            <div class="player-corners">
+              <div class="pc pc-tl"></div>
+              <div class="pc pc-tr"></div>
+              <div class="pc pc-bl"></div>
+              <div class="pc pc-br"></div>
+            </div>
+            <!-- Scan line (shown before play) -->
+            <div class="vsl-scan-line" id="scanLine"></div>
+            <!-- The video -->
+            <video id="htrVideo" preload="metadata" playsinline
+              poster="https://customer-6g3gkr0wk7sins9c.cloudflarestream.com/1da5e61745803cffa7fa9d538330f92d/thumbnails/thumbnail.jpg?time=3s">
+            </video>
+            <!-- Big play overlay -->
+            <div class="play-overlay" id="playOverlay">
+              <button class="big-play-btn" id="bigPlayBtn" aria-label="Play video">
+                <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+              </button>
+              <span class="play-overlay-label">See High Tide Radar in Action</span>
+            </div>
+            <!-- Controls bar -->
+            <div class="controls-bar" id="controlsBar">
+              <!-- Play/Pause -->
+              <button class="ctrl-btn" id="playPauseBtn" aria-label="Play/Pause">
+                <svg id="iconPlay" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                <svg id="iconPause" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              </button>
+              <!-- Progress + time -->
+              <div class="progress-wrap" id="progressWrap">
+                <div class="progress-bar" id="progressBar">
+                  <div class="progress-fill" id="progressFill" style="width:0%"></div>
+                </div>
+                <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
+              </div>
+              <!-- Volume -->
+              <div class="volume-wrap">
+                <button class="ctrl-btn sm" id="muteBtn" aria-label="Mute">
+                  <svg id="iconVol" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                  <svg id="iconMute" viewBox="0 0 24 24" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                </button>
+                <input type="range" class="volume-slider" id="volSlider" min="0" max="1" step="0.02" value="1" aria-label="Volume"/>
+              </div>
+              <!-- Fullscreen -->
+              <button class="ctrl-btn ctrl-fullscreen sm" id="fsBtn" aria-label="Fullscreen">
+                <svg id="iconFs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                <svg id="iconExit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS BAR ══ -->
+<section id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fi">
+        <div class="stat-num">280M+</div>
+        <div class="stat-label">Consumer Profiles</div>
+      </div>
+      <div class="stat-item fi fi-delay-1">
+        <div class="stat-num">40K+</div>
+        <div class="stat-label">Intent Topic Categories</div>
+      </div>
+      <div class="stat-item fi fi-delay-2">
+        <div class="stat-num">70%</div>
+        <div class="stat-label">Visitor Match Rate</div>
+      </div>
+      <div class="stat-item fi fi-delay-3">
+        <div class="stat-num">Daily</div>
+        <div class="stat-label">Signal Refresh Rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROBLEM ══ -->
+<section id="problem">
+  <div class="container">
+    <div class="problem-header">
+      <div class="fi"><span class="section-label">The Problem</span></div>
+      <h2 class="fi fi-delay-1">
+        You're Burning Budget on People<br/>
+        <span class="grad">Who Were Never Going to Buy</span>
+      </h2>
+      <p class="fi fi-delay-2">Most marketing tools tell you what happened after the fact. High Tide Radar tells you who to reach before you spend a dollar.</p>
+    </div>
+    <div class="problem-cards">
+      <div class="problem-card fi">
+        <div class="problem-icon">🚪</div>
+        <h3>Door Knockers Cost You 30%</h3>
+        <p>Paying your sales team 30% per close to canvass neighborhoods is unsustainable. You're funding people to find people — there's a better way.</p>
+        <div class="problem-stat">Avg. door-to-door close rate: 1–3%</div>
+      </div>
+      <div class="problem-card fi fi-delay-1">
+        <div class="problem-icon">👻</div>
+        <h3>97% of Website Visitors Leave Unidentified</h3>
+        <p>You're spending on SEO and ads to drive traffic. But you can't market to someone you can't identify. Most of your pipeline is invisible to you right now.</p>
+        <div class="problem-stat">Average site ID match rate industry-wide: ~20%</div>
+      </div>
+      <div class="problem-card fi fi-delay-2">
+        <div class="problem-icon">🎯</div>
+        <h3>Broad Audiences Waste Ad Spend</h3>
+        <p>Targeting "homeowners in your metro" means you're paying to reach people who already fixed their roof last month. Intent data changes everything.</p>
+        <div class="problem-stat">Waste up to 60–80% of ad budget on unqualified audiences</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SOLUTION ══ -->
+<section id="solution">
+  <div class="container">
+    <div class="solution-eyebrow fi"><span class="section-label">The Solution</span></div>
+    <h2 class="solution-headline fi fi-delay-1">
+      Identify. Target.<br/>
+      <span class="grad">Reach Them Everywhere.</span>
+    </h2>
+    <p class="solution-sub fi fi-delay-2">High Tide Radar connects who's searching right now with your outreach — direct mail, Facebook, Google, TikTok, and more. One platform. Zero wasted spend.</p>
+    <div class="solution-steps fi fi-delay-3">
+      <div class="step">
+        <div class="step-num active">01</div>
+        <h3>Capture Intent</h3>
+        <p>We identify who's actively searching for your service across 40,000+ topic categories — before they ever land on your site.</p>
+      </div>
+      <div class="step">
+        <div class="step-num active">02</div>
+        <h3>Build Your Audience</h3>
+        <p>Custom audiences built around real buying signals — by zip code, revenue range, or topic cluster — refreshed daily.</p>
+      </div>
+      <div class="step">
+        <div class="step-num active">03</div>
+        <h3>Activate Everywhere</h3>
+        <p>Push those audiences directly to your ad platforms and direct mail campaigns. Hit the same person across every channel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES ══ -->
+<section id="features">
+  <div class="container">
+    <div class="features-header fi">
+      <span class="section-label">Platform Capabilities</span>
+      <h2>Everything You Need to<br/><span class="grad">Own Your Market</span></h2>
+      <p>Three core pillars. One unified platform. Built for businesses that compete on execution.</p>
+    </div>
+
+    <!-- Feature 1: Intent Data -->
+    <div class="feature-block fi">
+      <div class="feature-copy">
+        <span class="section-label">Pillar One</span>
+        <h3>Intent Data That Tells You Who's <span class="grad">Ready to Buy Right Now</span></h3>
+        <p>We don't just identify website visitors — we pull search intent signals from across the entire web. Know which businesses and homeowners are actively researching your exact service category, filtered by revenue, location, and keyword behavior.</p>
+        <ul class="feature-list">
+          <li>40,000+ topic categories including roofing, HVAC, window repair, pest control, and more</li>
+          <li>Filter by business revenue ($10M+), employee count, and geographic radius</li>
+          <li>Keyword-level search behavior — not just page visits</li>
+          <li>Daily signal refresh so your audiences are never stale</li>
+          <li>280M+ consumer profiles and 120M+ B2B contacts</li>
+        </ul>
+      </div>
+      <div class="feature-visual fi fi-delay-2">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-s);margin-bottom:4px">Live Intent Signals — Your Service Area</div>
+        <div class="intent-bars">
+          <div class="intent-bar-row">
+            <span class="intent-topic">Window Repair</span>
+            <div class="intent-bar-wrap"><div class="intent-bar" style="width:88%;animation:grow-bar .8s .1s ease both"></div></div>
+            <span class="intent-pct">88%</span>
+          </div>
+          <div class="intent-bar-row">
+            <span class="intent-topic">Roof Replacement</span>
+            <div class="intent-bar-wrap"><div class="intent-bar" style="width:74%;animation:grow-bar .8s .2s ease both"></div></div>
+            <span class="intent-pct">74%</span>
+          </div>
+          <div class="intent-bar-row">
+            <span class="intent-topic">HVAC Service</span>
+            <div class="intent-bar-wrap"><div class="intent-bar" style="width:61%;animation:grow-bar .8s .3s ease both"></div></div>
+            <span class="intent-pct">61%</span>
+          </div>
+          <div class="intent-bar-row">
+            <span class="intent-topic">Marketing Agency</span>
+            <div class="intent-bar-wrap"><div class="intent-bar" style="width:52%;animation:grow-bar .8s .4s ease both"></div></div>
+            <span class="intent-pct">52%</span>
+          </div>
+          <div class="intent-bar-row">
+            <span class="intent-topic">Website Design</span>
+            <div class="intent-bar-wrap"><div class="intent-bar" style="width:43%;animation:grow-bar .8s .5s ease both"></div></div>
+            <span class="intent-pct">43%</span>
+          </div>
+          <div class="intent-bar-row">
+            <span class="intent-topic">Social Media Mgmt</span>
+            <div class="intent-bar-wrap"><div class="intent-bar" style="width:38%;animation:grow-bar .8s .6s ease both"></div></div>
+            <span class="intent-pct">38%</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--border-2)">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--teal);animation:blink 1.5s infinite"></div>
+          <span style="font-size:.7rem;color:var(--text-s)">Refreshed daily · Showing top intent topics in your area</span>
+        </div>
+      </div>
+    </div>
+    <style>
+    @keyframes grow-bar{from{width:0}to{width:var(--w,100%)}}
+    </style>
+
+    <!-- Feature 2: Visitor ID -->
+    <div class="feature-block reverse fi">
+      <div class="feature-copy">
+        <span class="section-label">Pillar Two</span>
+        <h3>Identify <span class="grad">70% of Your Website Visitors</span> — Even If They Never Fill Out a Form</h3>
+        <p>Most businesses identify less than 3% of their site traffic. We match up to 70% of your visitors with real identities — name, email, address, and phone — so you can follow up immediately through whatever channel converts best.</p>
+        <ul class="feature-list">
+          <li>Name, email, mailing address, and phone on every match</li>
+          <li>Real-time notifications when high-intent visitors hit key pages</li>
+          <li>Filter by page visited — catch people who viewed pricing or services</li>
+          <li>Suppression lists to avoid wasting budget on existing customers</li>
+          <li>CRM-ready export for immediate follow-up</li>
+        </ul>
+      </div>
+      <div class="feature-visual fi fi-delay-2">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-s);margin-bottom:12px">Live Visitor Feed — Last 60 Minutes</div>
+        <div class="visitor-rows">
+          <div class="visitor-row">
+            <div class="v-avatar">JM</div>
+            <div class="v-info">
+              <div class="v-name">James M. · Atlanta, GA</div>
+              <div class="v-detail">Viewed /services/window-repair · 4 min ago</div>
+            </div>
+            <div class="v-signal hot">Hot Lead</div>
+          </div>
+          <div class="visitor-row">
+            <div class="v-avatar">SL</div>
+            <div class="v-info">
+              <div class="v-name">Sarah L. · Marietta, GA</div>
+              <div class="v-detail">Viewed /pricing · 12 min ago</div>
+            </div>
+            <div class="v-signal hot">Hot Lead</div>
+          </div>
+          <div class="visitor-row">
+            <div class="v-avatar">RK</div>
+            <div class="v-info">
+              <div class="v-name">Robert K. · Decatur, GA</div>
+              <div class="v-detail">Viewed /services · 28 min ago</div>
+            </div>
+            <div class="v-signal warm">Warm</div>
+          </div>
+          <div class="visitor-row">
+            <div class="v-avatar">TC</div>
+            <div class="v-info">
+              <div class="v-name">Tina C. · Alpharetta, GA</div>
+              <div class="v-detail">Viewed /homepage · 41 min ago</div>
+            </div>
+            <div class="v-signal new">New</div>
+          </div>
+          <div class="visitor-row">
+            <div class="v-avatar">BW</div>
+            <div class="v-info">
+              <div class="v-name">Brian W. · Smyrna, GA</div>
+              <div class="v-detail">Viewed /contact · 55 min ago</div>
+            </div>
+            <div class="v-signal hot">Hot Lead</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--border-2)">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--teal);animation:blink 1.5s infinite"></div>
+          <span style="font-size:.7rem;color:var(--text-s)">Matching in real-time · 70% identification rate</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3: Multi-Channel Activation -->
+    <div class="feature-block fi">
+      <div class="feature-copy">
+        <span class="section-label">Pillar Three</span>
+        <h3>Activate the Same Audience<br/><span class="grad">Across Every Channel</span></h3>
+        <p>Once we've identified who's in your market, we push those audiences directly to your ad platforms and direct mail queue — automatically. The same person sees your brand on Facebook, Google, their mailbox, and TikTok. Repetition creates conversion.</p>
+        <ul class="feature-list">
+          <li>Direct integration with Facebook, Google, and TikTok Ads</li>
+          <li>Direct mail management — we design, print, and mail for you</li>
+          <li>Connected TV (CTV) and display advertising</li>
+          <li>Email outreach sequences for identified visitors</li>
+          <li>Automatic audience sync — no manual exports or uploads</li>
+        </ul>
+      </div>
+      <div class="feature-visual fi fi-delay-2">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-s);margin-bottom:16px">Audience Activated Across Channels</div>
+        <div class="channel-grid">
+          <div class="channel-pill active"><div class="ch-dot" style="background:#1877f2"></div>Facebook Ads</div>
+          <div class="channel-pill active"><div class="ch-dot" style="background:#4285f4"></div>Google Ads</div>
+          <div class="channel-pill active"><div class="ch-dot" style="background:var(--teal)"></div>Direct Mail</div>
+          <div class="channel-pill active"><div class="ch-dot" style="background:#ff0050"></div>TikTok Ads</div>
+          <div class="channel-pill active"><div class="ch-dot" style="background:#c13584"></div>Instagram</div>
+          <div class="channel-pill active"><div class="ch-dot" style="background:#ff6b35"></div>Connected TV</div>
+          <div class="channel-pill active"><div class="ch-dot" style="background:#7b61ff"></div>Display</div>
+          <div class="channel-pill active"><div class="ch-dot" style="background:#00b894"></div>Email</div>
+        </div>
+        <div style="margin-top:16px;padding:16px;background:rgba(61,214,245,.05);border:1px solid var(--border);border-radius:10px">
+          <div style="font-size:.75rem;color:var(--text-m);margin-bottom:8px;font-weight:600">Audience: Window Repair Intent — Metro Atlanta</div>
+          <div style="display:flex;gap:16px">
+            <div>
+              <div style="font-size:1.1rem;font-weight:800;color:var(--text-h)">2,847</div>
+              <div style="font-size:.68rem;color:var(--text-s)">Profiles matched</div>
+            </div>
+            <div>
+              <div style="font-size:1.1rem;font-weight:800;color:var(--teal)">8</div>
+              <div style="font-size:.68rem;color:var(--text-s)">Channels active</div>
+            </div>
+            <div>
+              <div style="font-size:1.1rem;font-weight:800;color:var(--gold)">Daily</div>
+              <div style="font-size:.68rem;color:var(--text-s)">Auto-refresh</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ BIG STAT ══ -->
+<section id="bigstat">
+  <div class="container">
+    <div class="fi"><span class="section-label">The Impact</span></div>
+    <div class="bigstat-num fi fi-delay-1">40%</div>
+    <p class="bigstat-label fi fi-delay-2">
+      <strong>Projected marketing cost reduction</strong> when businesses shift from broad awareness spend to precision, intent-driven audiences with High Tide Radar.
+    </p>
+  </div>
+</section>
+
+<!-- ══ AUDIENCE ══ -->
+<section id="audience">
+  <div class="container">
+    <div class="audience-header">
+      <div class="fi"><span class="section-label">Who It's For</span></div>
+      <h2 class="fi fi-delay-1">Built for Businesses That<br/><span class="grad">Compete on Precision</span></h2>
+      <p class="fi fi-delay-2">This isn't a mass-market tool. It's built for operators who want to own a market, not just be visible in it.</p>
+    </div>
+    <div class="audience-grid">
+      <div class="audience-card fi">
+        <span class="aud-icon">🏠</span>
+        <div class="aud-tag">Home Services</div>
+        <h3>Home Services Companies</h3>
+        <p>Roofing, HVAC, windows, landscaping, pest control. Know which neighborhoods are actively searching for your service — before your competitors do.</p>
+        <div class="aud-use-cases">
+          <div class="aud-uc">Replace door knockers with precision targeting</div>
+          <div class="aud-uc">Direct mail to ready-to-buy homeowners</div>
+          <div class="aud-uc">Retarget visitors who viewed your pricing page</div>
+        </div>
+      </div>
+      <div class="audience-card fi fi-delay-1">
+        <span class="aud-icon">📈</span>
+        <div class="aud-tag">SMB · $1M–$10M Revenue</div>
+        <h3>Growing Local Businesses</h3>
+        <p>You've outgrown Facebook cold targeting but you're not big enough for a $50K/mo enterprise ad budget. Radar gives you enterprise-grade intelligence at a fraction of the cost.</p>
+        <div class="aud-use-cases">
+          <div class="aud-uc">Custom audiences without a data science team</div>
+          <div class="aud-uc">Local competitors won't have access to this</div>
+          <div class="aud-uc">Compete with brands 10x your size</div>
+        </div>
+      </div>
+      <div class="audience-card fi fi-delay-2">
+        <span class="aud-icon">🏢</span>
+        <div class="aud-tag">Enterprise · $10M+ Revenue</div>
+        <h3>Enterprise & Multi-Location</h3>
+        <p>B2B companies targeting businesses with $10M+ revenue. Filter by industry, employee count, intent category, and purchasing behavior.</p>
+        <div class="aud-use-cases">
+          <div class="aud-uc">Unlimited custom audience segments</div>
+          <div class="aud-uc">120M+ B2B contacts, revenue-filtered</div>
+          <div class="aud-uc">Full direct mail management included</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ══ -->
+<section id="howit">
+  <div class="container">
+    <div class="howit-header">
+      <div class="fi"><span class="section-label">How It Works</span></div>
+      <h2 class="fi fi-delay-1">Up and Running in<br/><span class="grad">72 Hours or Less</span></h2>
+      <p class="fi fi-delay-2">No long onboarding. No technical setup on your end. We handle everything so you can focus on closing the leads we find you.</p>
+    </div>
+    <div class="steps-track">
+      <div class="step-card fi">
+        <div class="step-card-badge badge-live">Step 1</div>
+        <div class="step-card-num">📋</div>
+        <h3>Onboarding Call</h3>
+        <p>30-minute strategy session. We learn your service area, target customer profile, and revenue goals. You walk away with a custom audience blueprint.</p>
+      </div>
+      <div class="step-card fi fi-delay-1">
+        <div class="step-card-badge badge-daily">Step 2</div>
+        <div class="step-card-num">🎯</div>
+        <h3>Audience Build</h3>
+        <p>We build your first intent audiences and connect your ad accounts. Visitor ID goes live on your site with one pixel. No dev work required.</p>
+      </div>
+      <div class="step-card fi fi-delay-2">
+        <div class="step-card-badge badge-auto">Step 3</div>
+        <div class="step-card-num">🚀</div>
+        <h3>Launch & Optimize</h3>
+        <p>Audiences push to your channels. We monitor performance, refresh signals daily, and optimize targeting weekly. You focus on the sales calls.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BETA CTA ══ -->
+<section id="beta">
+  <div class="container">
+    <div class="beta-inner">
+      <div class="fi"><span class="section-label">Beta Pricing</span></div>
+      <h2 class="fi fi-delay-1">
+        Lock In Your Rate.<br/>
+        <span class="grad">Before the Price Goes Up.</span>
+      </h2>
+      <p class="fi fi-delay-2">We're accepting 10 beta clients total. Beta pricing is locked for life — meaning you pay the same rate forever, even as the platform price increases for new clients.</p>
+
+      <!-- Spots visualizer -->
+      <div class="spots-wrap fi fi-delay-3">
+        <div class="spots-dots">
+          <div class="spot-dot taken"></div>
+          <div class="spot-dot taken"></div>
+          <div class="spot-dot taken"></div>
+          <div class="spot-dot taken"></div>
+          <div class="spot-dot taken"></div>
+          <div class="spot-dot taken"></div>
+          <div class="spot-dot taken"></div>
+          <div class="spot-dot open"></div>
+          <div class="spot-dot open"></div>
+          <div class="spot-dot open"></div>
+        </div>
+        <div class="spots-label"><strong>3 spots open</strong> · 7 of 10 beta seats filled</div>
+      </div>
+
+      <!-- Pricing cards -->
+      <div class="beta-cards fi fi-delay-3">
+        <div class="beta-card">
+          <div class="bc-name">High Tide Radar</div>
+          <div class="bc-price">
+            <span class="bc-dollar">$</span>
+            <span class="bc-amount">1,500</span>
+            <span class="bc-period">/mo</span>
+          </div>
+          <div class="bc-future">After beta: <span>$2,500/mo</span></div>
+          <div class="bc-divider"></div>
+          <ul class="bc-features">
+            <li>Site visitor identity (up to 70% match rate)</li>
+            <li>2 custom intent audiences</li>
+            <li>Facebook, Google & TikTok integrations</li>
+            <li>Daily audience refresh</li>
+            <li>280M+ consumer profile database</li>
+            <li>Dedicated onboarding call</li>
+          </ul>
+          <div class="bc-lock">🔒 Rate locked for life at $1,500/mo</div>
+        </div>
+        <div class="beta-card featured">
+          <div class="beta-card-badge featured-badge">Most Popular</div>
+          <div class="bc-name">High Tide Radar Pro</div>
+          <div class="bc-price">
+            <span class="bc-dollar">$</span>
+            <span class="bc-amount">2,500</span>
+            <span class="bc-period">/mo</span>
+          </div>
+          <div class="bc-future">After beta: <span>$4,000/mo</span></div>
+          <div class="bc-divider"></div>
+          <ul class="bc-features">
+            <li>Everything in Radar, plus:</li>
+            <li>Unlimited custom audiences</li>
+            <li>Direct mail management ($1.00/mailer)</li>
+            <li>3 mailer designs per month (included)</li>
+            <li>120M+ B2B contacts with revenue filters</li>
+            <li>Connected TV & display activation</li>
+            <li>Weekly performance optimization calls</li>
+          </ul>
+          <div class="bc-lock">🔒 Rate locked for life at $2,500/mo</div>
+        </div>
+      </div>
+
+      <div class="beta-cta-wrap fi fi-delay-4">
+        <a href="mailto:chantz@hightidemarketing.com?subject=High Tide Radar — Beta Spot Request" class="btn-xl">
+          Book a Demo & Lock In Your Spot
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <span class="cta-fine">No commitment required for the demo. Cancel anytime with 30 days notice.</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ DEMO ══ -->
+<section id="demo">
+  <div class="container">
+    <div class="demo-inner">
+      <div class="fi"><span class="section-label">Book a Demo</span></div>
+      <h2 class="fi fi-delay-1">See What High Tide Radar<br/><span class="grad">Finds in Your Market</span></h2>
+      <p class="fi fi-delay-2">We'll pull a live sample of intent data for your specific service area — at no cost. You'll see exactly who's searching for your service right now. Most clients are shocked at what we find.</p>
+      <div class="demo-card fi fi-delay-3">
+        <div class="demo-features">
+          <div class="demo-feat">
+            <div class="demo-feat-icon">⚡</div>
+            <div class="demo-feat-text">30-Minute Call</div>
+          </div>
+          <div class="demo-feat">
+            <div class="demo-feat-icon">🎯</div>
+            <div class="demo-feat-text">Live Data Pull</div>
+          </div>
+          <div class="demo-feat">
+            <div class="demo-feat-icon">🔓</div>
+            <div class="demo-feat-text">Zero Obligation</div>
+          </div>
+        </div>
+        <a href="mailto:chantz@hightidemarketing.com?subject=High Tide Radar Demo Request" class="btn-xl" style="justify-content:center">
+          Request Your Free Demo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <p style="font-size:.75rem;color:var(--text-s);text-align:center">Email <a href="mailto:chantz@hightidemarketing.com" style="color:var(--teal);text-decoration:none">chantz@hightidemarketing.com</a> or use the button above. We respond within a few hours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="radar-logo.svg" alt="High Tide Radar"/>
+      </div>
+      <div class="footer-links">
+        <a href="high-tide-radar-pricing.html">Pricing</a>
+        <a href="high-tide-radar-service-agreement.html">Service Agreement</a>
+        <a href="mailto:chantz@hightidemarketing.com">Contact</a>
+      </div>
+      <p class="footer-legal">High Tide Radar is a proprietary audience intelligence platform by High Tide Marketing. Platform data complies with TCPA, CAN-SPAM, Do Not Call, GDPR, and CCPA regulations. All data is sourced from opted-in consumer and business databases.</p>
+      <p class="footer-copy">© 2026 High Tide Marketing · All rights reserved</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Intersection Observer fade-in ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fi').forEach(el => observer.observe(el));
+
+// ── Intent bar animation on scroll ──
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.intent-bar').forEach((bar, i) => {
+        const w = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => {
+          bar.style.transition = `width 0.8s ${i * 0.1}s cubic-bezier(.23,1,.32,1)`;
+          bar.style.width = w;
+        }, 100);
+      });
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.feature-visual').forEach(el => barObserver.observe(el));
+
+// ── Nav scroll style ──
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) {
+    nav.style.background = 'rgba(5,12,24,.96)';
+    nav.style.borderBottomColor = 'rgba(61,214,245,.1)';
+  } else {
+    nav.style.background = 'rgba(5,12,24,.8)';
+    nav.style.borderBottomColor = 'rgba(255,255,255,.06)';
+  }
+}, { passive: true });
+
+// ══════════════════════════════════════
+// CUSTOM VIDEO PLAYER
+// ══════════════════════════════════════
+(function() {
+  const video       = document.getElementById('htrVideo');
+  const shell       = document.getElementById('playerShell');
+  const overlay     = document.getElementById('playOverlay');
+  const bigPlayBtn  = document.getElementById('bigPlayBtn');
+  const playPauseBtn= document.getElementById('playPauseBtn');
+  const iconPlay    = document.getElementById('iconPlay');
+  const iconPause   = document.getElementById('iconPause');
+  const progressBar = document.getElementById('progressBar');
+  const progressFill= document.getElementById('progressFill');
+  const timeDisplay = document.getElementById('timeDisplay');
+  const muteBtn     = document.getElementById('muteBtn');
+  const iconVol     = document.getElementById('iconVol');
+  const iconMute    = document.getElementById('iconMute');
+  const volSlider   = document.getElementById('volSlider');
+  const fsBtn       = document.getElementById('fsBtn');
+  const iconFs      = document.getElementById('iconFs');
+  const iconExit    = document.getElementById('iconExit');
+  const scanLine    = document.getElementById('scanLine');
+
+  // Block right-click to prevent browser download menu
+  video.addEventListener('contextmenu', e => e.preventDefault());
+
+  // ── Cloudflare Stream via HLS.js ──
+  const HLS_URL = 'https://customer-6g3gkr0wk7sins9c.cloudflarestream.com/1da5e61745803cffa7fa9d538330f92d/manifest/video.m3u8';
+  if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+    const hls = new Hls({ startLevel: -1 }); // auto quality selection
+    hls.loadSource(HLS_URL);
+    hls.attachMedia(video);
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    // Safari: native HLS support
+    video.src = HLS_URL;
+  }
+
+  // Hoisted — used by shell click handler AND scrub section below
+  let isScrubbing = false;
+
+  // Format seconds → m:ss
+  function fmtTime(s) {
+    if (isNaN(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + String(sec).padStart(2, '0');
+  }
+
+  // Update play/pause icon state
+  function syncPlayIcon() {
+    if (video.paused) {
+      iconPlay.style.display  = 'block';
+      iconPause.style.display = 'none';
+      shell.classList.add('paused');
+    } else {
+      iconPlay.style.display  = 'none';
+      iconPause.style.display = 'block';
+      shell.classList.remove('paused');
+    }
+  }
+
+  // Big overlay play button
+  bigPlayBtn.addEventListener('click', () => {
+    overlay.classList.add('hidden');
+    scanLine.style.display = 'none';
+    video.play();
+  });
+
+  // Click on video shell toggles play/pause (but NOT on controls, and NOT if user just finished scrubbing)
+  shell.addEventListener('click', (e) => {
+    if (isScrubbing) return;
+    if (e.target.closest('.controls-bar') || e.target.closest('.play-overlay')) return;
+    if (video.paused) { video.play(); } else { video.pause(); }
+  });
+
+  // Play/Pause button in controls bar
+  playPauseBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (video.paused) { video.play(); } else { video.pause(); }
+  });
+
+  video.addEventListener('play',  syncPlayIcon);
+  video.addEventListener('pause', syncPlayIcon);
+  video.addEventListener('ended', () => {
+    overlay.classList.remove('hidden');
+    scanLine.style.display = 'block';
+    video.currentTime = 0;
+    syncPlayIcon();
+  });
+
+  // Progress bar update — skip while user is actively scrubbing
+  video.addEventListener('timeupdate', () => {
+    if (isScrubbing) return; // ← KEY FIX: don't overwrite drag position
+    if (!video.duration) return;
+    const pct = (video.currentTime / video.duration) * 100;
+    progressFill.style.width = pct + '%';
+    timeDisplay.textContent = fmtTime(video.currentTime) + ' / ' + fmtTime(video.duration);
+  });
+
+  video.addEventListener('loadedmetadata', () => {
+    timeDisplay.textContent = '0:00 / ' + fmtTime(video.duration);
+  });
+
+  // Seek
+  const progressWrap = document.getElementById('progressWrap');
+  let barRect = null; // captured once at mousedown so it doesn't shift mid-drag
+
+  function scrubTo(clientX) {
+    if (!video.duration || isNaN(video.duration)) return;
+    const rect = barRect || progressBar.getBoundingClientRect();
+    const pct  = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    const seekTime = pct * video.duration;
+    video.currentTime = seekTime;
+    progressFill.style.width = (pct * 100) + '%';
+    timeDisplay.textContent = fmtTime(seekTime) + ' / ' + fmtTime(video.duration);
+  }
+
+  // Mousedown: start scrub, lock in the bar rect, prevent text-selection & page scroll
+  progressWrap.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    isScrubbing = true;
+    barRect = progressBar.getBoundingClientRect(); // snapshot position once
+    scrubTo(e.clientX);
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (isScrubbing) scrubTo(e.clientX);
+  });
+
+  document.addEventListener('mouseup', (e) => {
+    if (!isScrubbing) return;
+    scrubTo(e.clientX); // commit final position
+    isScrubbing = false;
+    barRect = null;
+  });
+
+  // Click (no drag) — still works for a quick tap on the bar
+  progressWrap.addEventListener('click', (e) => {
+    e.stopPropagation();
+    barRect = progressBar.getBoundingClientRect();
+    scrubTo(e.clientX);
+    barRect = null;
+  });
+
+  // Touch scrubbing
+  progressWrap.addEventListener('touchstart', (e) => {
+    isScrubbing = true;
+    barRect = progressBar.getBoundingClientRect();
+    scrubTo(e.touches[0].clientX);
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    if (isScrubbing) scrubTo(e.touches[0].clientX);
+  }, { passive: true });
+  document.addEventListener('touchend', () => {
+    isScrubbing = false;
+    barRect = null;
+  });
+
+  // Volume slider
+  volSlider.addEventListener('input', () => {
+    video.volume = parseFloat(volSlider.value);
+    video.muted  = (video.volume === 0);
+    syncMuteIcon();
+  });
+
+  function syncMuteIcon() {
+    if (video.muted || video.volume === 0) {
+      iconVol.style.display  = 'none';
+      iconMute.style.display = 'block';
+    } else {
+      iconVol.style.display  = 'block';
+      iconMute.style.display = 'none';
+    }
+  }
+
+  muteBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    video.muted = !video.muted;
+    volSlider.value = video.muted ? 0 : video.volume || 1;
+    syncMuteIcon();
+  });
+
+  // Fullscreen
+  fsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!document.fullscreenElement) {
+      (shell.requestFullscreen || shell.webkitRequestFullscreen || shell.mozRequestFullScreen).call(shell);
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen).call(document);
+    }
+  });
+  document.addEventListener('fullscreenchange', () => {
+    const isFs = !!document.fullscreenElement;
+    iconFs.style.display   = isFs ? 'none'  : 'block';
+    iconExit.style.display = isFs ? 'block' : 'none';
+    shell.classList.toggle('controls-visible', isFs);
+  });
+
+  // Auto-hide controls after 3s of inactivity while playing
+  let hideTimer;
+  function resetHideTimer() {
+    shell.classList.add('controls-visible');
+    clearTimeout(hideTimer);
+    if (!video.paused) {
+      hideTimer = setTimeout(() => shell.classList.remove('controls-visible'), 3000);
+    }
+  }
+  shell.addEventListener('mousemove', resetHideTimer);
+  shell.addEventListener('touchstart', resetHideTimer, { passive: true });
+})();
+</script>
+
+</body>
+</html>
