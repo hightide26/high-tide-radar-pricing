@@ -87,8 +87,8 @@ body{
    LAYOUT
 ════════════════════════════════════════ */
 section{position:relative}
-.container{max-width:1160px;margin:0 auto;padding:0 32px}
-.container-wide{max-width:1320px;margin:0 auto;padding:0 32px}
+.container{max-width:1400px;margin:0 auto;padding:0 40px}
+.container-wide{max-width:1400px;margin:0 auto;padding:0 40px}
 
 /* ════════════════════════════════════════
    LABELS & BADGES
@@ -142,9 +142,7 @@ section{position:relative}
 ════════════════════════════════════════ */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
-  padding:0 40px;
   height:68px;
-  display:flex;align-items:center;justify-content:space-between;
   background:rgba(255,255,255,.92);
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
@@ -152,24 +150,22 @@ nav{
   transition:all .3s ease;
 }
 nav.scrolled{background:rgba(255,255,255,.98);box-shadow:var(--shadow-sm)}
-.nav-logo img{height:30px}
-.nav-center{display:flex;align-items:center;gap:32px}
-.nav-link{
-  font-size:.82rem;font-weight:500;color:#475569;
-  text-decoration:none;transition:color .2s;letter-spacing:.01em;
+.nav-inner{
+  max-width:1400px;margin:0 auto;padding:0 40px;
+  height:100%;display:flex;align-items:center;justify-content:space-between;
 }
-.nav-link:hover{color:#0b1628}
+.nav-logo img{height:30px}
 .nav-right{display:flex;align-items:center;gap:12px}
 .nav-beta{
   font-size:.67rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--gold);padding:4px 12px;
+  color:var(--gold);padding:5px 14px;
   border:1px solid var(--gold-border);border-radius:100px;background:var(--gold-bg);
-  display:inline-flex;align-items:center;gap:5px;
-  animation:pulse-gold 2.5s ease-in-out infinite;
+  display:inline-flex;align-items:center;gap:6px;
+  animation:pulse-gold 2s ease-in-out infinite;
 }
 @keyframes pulse-gold{
-  0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.2)}
-  50%{box-shadow:0 0 0 5px rgba(245,158,11,0)}
+  0%,100%{box-shadow:0 0 0 0 rgba(180,83,9,.35);border-color:var(--gold-border)}
+  50%{box-shadow:0 0 0 6px rgba(180,83,9,0);border-color:rgba(180,83,9,.6)}
 }
 
 /* ════════════════════════════════════════
@@ -989,8 +985,7 @@ footer{
   .audience-grid{grid-template-columns:1fr}
   .howit-grid{grid-template-columns:1fr;gap:16px}
   .beta-cards{grid-template-columns:1fr;max-width:400px}
-  nav{padding:0 20px}
-  .nav-center{display:none}
+  .nav-inner{padding:0 20px}
   .ss-badge.top-right,.ss-badge.bottom-left{display:none}
   .hero-middle-row{flex-direction:column;gap:24px}
   .hf-side-col{width:100%;flex-direction:row;flex-wrap:wrap}
@@ -1002,23 +997,19 @@ footer{
 
 <!-- ══ NAV ══ -->
 <nav id="mainNav">
-  <a class="nav-logo" href="#">
-    <img src="radar-logo.svg" alt="High Tide Radar"/>
-  </a>
-  <div class="nav-center">
-    <a href="#platform-overview" class="nav-link">Platform</a>
-    <a href="#audience" class="nav-link">Who It's For</a>
-    <a href="#beta" class="nav-link">Pricing</a>
-    <a href="#demo" class="nav-link">Book a Demo</a>
-  </div>
-  <div class="nav-right">
-    <span class="nav-beta">
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      Beta — 4 Spots Left
-    </span>
-    <a href="#beta" class="btn btn-primary" style="padding:9px 22px;font-size:.78rem">
-      Lock In Pricing →
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <img src="radar-logo.svg" alt="High Tide Radar"/>
     </a>
+    <div class="nav-right">
+      <span class="nav-beta">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Beta — 4 Spots Left
+      </span>
+      <a href="#demo" class="btn btn-primary" style="padding:9px 22px;font-size:.78rem">
+        Book a Demo
+      </a>
+    </div>
   </div>
 </nav>
 
