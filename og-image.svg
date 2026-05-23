@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#060d1c"/>
+      <stop offset="55%" stop-color="#0b1628"/>
+      <stop offset="100%" stop-color="#0a1e38"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="50%" cy="0%" r="70%">
+      <stop offset="0%" stop-color="#0891b2" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#0891b2" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="85%" cy="60%" r="40%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="clip"><rect width="1200" height="630"/></clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Subtle grid lines -->
+  <g clip-path="url(#clip)" opacity="0.03">
+    <line x1="0" y1="90" x2="1200" y2="90" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="180" x2="1200" y2="180" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="270" x2="1200" y2="270" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="360" x2="1200" y2="360" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="450" x2="1200" y2="450" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="540" x2="1200" y2="540" stroke="white" stroke-width="1"/>
+    <line x1="150" y1="0" x2="150" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="300" y1="0" x2="300" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="450" y1="0" x2="450" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="750" y1="0" x2="750" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="900" y1="0" x2="900" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="1050" y1="0" x2="1050" y2="630" stroke="white" stroke-width="1"/>
+  </g>
+
+  <!-- Left teal accent bar -->
+  <rect x="72" y="72" width="4" height="60" rx="2" fill="#22d3ee" opacity="0.6"/>
+
+  <!-- Logo: HT mark (top left) -->
+  <!-- H -->
+  <rect x="88" y="72" width="7" height="36" rx="2" fill="white"/>
+  <rect x="88" y="86" width="22" height="7" rx="2" fill="white"/>
+  <rect x="103" y="72" width="7" height="36" rx="2" fill="white"/>
+  <!-- T -->
+  <rect x="118" y="72" width="30" height="7" rx="2" fill="#22d3ee"/>
+  <rect x="129" y="72" width="7" height="36" rx="2" fill="#22d3ee"/>
+
+  <!-- Brand name -->
+  <text x="164" y="96" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="17" font-weight="700" fill="rgba(255,255,255,0.55)" letter-spacing="2">HIGH TIDE RADAR</text>
+
+  <!-- Main headline -->
+  <text x="72" y="270" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="80" font-weight="900" fill="white" letter-spacing="-3">Know Who's Searching.</text>
+  <text x="72" y="368" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="80" font-weight="900" fill="#22d3ee" letter-spacing="-3">Reach Them Everywhere.</text>
+
+  <!-- Subline -->
+  <text x="72" y="430" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="22" fill="rgba(255,255,255,0.4)" letter-spacing="0.2">Identify in-market buyers · Build audiences automatically · Reach them with ads &amp; mail</text>
+
+  <!-- Divider -->
+  <rect x="72" y="480" width="1056" height="1" fill="rgba(255,255,255,0.07)"/>
+
+  <!-- Stat chips -->
+  <!-- Chip 1 -->
+  <rect x="72" y="502" width="190" height="68" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <text x="92" y="534" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="26" font-weight="900" fill="#22d3ee" letter-spacing="-1">280M+</text>
+  <text x="92" y="556" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">Consumer profiles</text>
+
+  <!-- Chip 2 -->
+  <rect x="278" y="502" width="190" height="68" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <text x="298" y="534" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="26" font-weight="900" fill="#22d3ee" letter-spacing="-1">70%</text>
+  <text x="298" y="556" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">Site visitor match rate</text>
+
+  <!-- Chip 3 -->
+  <rect x="484" y="502" width="190" height="68" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <text x="504" y="534" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="26" font-weight="900" fill="#22d3ee" letter-spacing="-1">6 channels</text>
+  <text x="504" y="556" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">Ads, mail &amp; more</text>
+
+  <!-- Right radar pulse graphic -->
+  <circle cx="1050" cy="315" r="180" fill="none" stroke="#0891b2" stroke-width="1" opacity="0.12"/>
+  <circle cx="1050" cy="315" r="120" fill="none" stroke="#0891b2" stroke-width="1" opacity="0.18"/>
+  <circle cx="1050" cy="315" r="60" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity="0.25"/>
+  <circle cx="1050" cy="315" r="8" fill="#22d3ee" opacity="0.8"/>
+  <!-- Sweep line -->
+  <line x1="1050" y1="315" x2="1050" y2="135" stroke="#22d3ee" stroke-width="2" opacity="0.4"/>
+  <!-- Signal dots -->
+  <circle cx="1090" cy="220" r="5" fill="#22d3ee" opacity="0.9"/>
+  <circle cx="980" cy="270" r="4" fill="#22d3ee" opacity="0.7"/>
+  <circle cx="1110" cy="310" r="3" fill="#22d3ee" opacity="0.6"/>
+</svg>
