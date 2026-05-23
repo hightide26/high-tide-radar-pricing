@@ -205,14 +205,14 @@ nav.scrolled{background:rgba(255,255,255,.98);box-shadow:var(--shadow-sm)}
    HERO 3-COL LAYOUT + FLOATING CARDS
 ════════════════════════════════════════ */
 .hero-middle-row{
-  display:flex;align-items:center;gap:36px;
+  display:flex;align-items:center;gap:52px;
 }
 .hero-center-col{
   flex:1;min-width:0;text-align:center;
 }
 .hf-side-col{
-  width:190px;flex-shrink:0;
-  display:flex;flex-direction:column;gap:14px;
+  width:200px;flex-shrink:0;
+  display:flex;flex-direction:column;gap:24px;
 }
 .hf-card{
   display:flex;align-items:flex-start;gap:10px;
@@ -223,14 +223,51 @@ nav.scrolled{background:rgba(255,255,255,.98);box-shadow:var(--shadow-sm)}
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
   box-shadow:0 4px 24px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.1);
-  animation:hf-float 4s ease-in-out infinite;
 }
-.hf-side-col:last-child .hf-card:first-child{animation-delay:.5s}
-.hf-side-col:last-child .hf-card:last-child{animation-delay:1.5s}
-.hf-side-col:first-child .hf-card:last-child{animation-delay:1s}
-@keyframes hf-float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-6px)}
+
+/* Individual card offsets — organic scattered feel */
+.hf-side-col:first-child .hf-card:first-child{
+  transform:translateX(28px) rotate(-1.5deg);
+  animation:hf-float-a 4.2s ease-in-out infinite;
+}
+.hf-side-col:first-child .hf-card:last-child{
+  transform:translateX(8px) rotate(.8deg);
+  animation:hf-float-b 3.8s ease-in-out infinite;
+  animation-delay:.9s;
+}
+.hf-side-col:last-child .hf-card:first-child{
+  transform:translateX(-24px) rotate(1.2deg);
+  animation:hf-float-b 4.5s ease-in-out infinite;
+  animation-delay:.4s;
+}
+.hf-side-col:last-child .hf-card:last-child{
+  transform:translateX(-10px) rotate(-1deg);
+  animation:hf-float-a 3.6s ease-in-out infinite;
+  animation-delay:1.4s;
+}
+@keyframes hf-float-a{
+  0%,100%{transform:translateX(28px) rotate(-1.5deg) translateY(0)}
+  50%{transform:translateX(28px) rotate(-1.5deg) translateY(-7px)}
+}
+@keyframes hf-float-b{
+  0%,100%{transform:translateX(8px) rotate(.8deg) translateY(0)}
+  50%{transform:translateX(8px) rotate(.8deg) translateY(-5px)}
+}
+.hf-side-col:last-child .hf-card:first-child{
+  animation:hf-float-c 4.5s ease-in-out infinite;
+  animation-delay:.4s;
+}
+.hf-side-col:last-child .hf-card:last-child{
+  animation:hf-float-d 3.6s ease-in-out infinite;
+  animation-delay:1.4s;
+}
+@keyframes hf-float-c{
+  0%,100%{transform:translateX(-24px) rotate(1.2deg) translateY(0)}
+  50%{transform:translateX(-24px) rotate(1.2deg) translateY(-6px)}
+}
+@keyframes hf-float-d{
+  0%,100%{transform:translateX(-10px) rotate(-1deg) translateY(0)}
+  50%{transform:translateX(-10px) rotate(-1deg) translateY(-8px)}
 }
 .hf-icon{
   width:32px;height:32px;border-radius:9px;
