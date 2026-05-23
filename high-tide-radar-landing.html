@@ -491,9 +491,10 @@ h1{
   width:52px;height:52px;border-radius:14px;
   background:var(--teal-light);
   display:flex;align-items:center;justify-content:center;
-  font-size:1.5rem;margin-bottom:20px;
+  margin-bottom:20px;
   border:1px solid var(--teal-mid);
 }
+.pain-icon svg{width:24px;height:24px;stroke:var(--teal);stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .pain-card h3{font-size:1.08rem;font-weight:700;margin-bottom:10px;letter-spacing:-.01em}
 .pain-card p{font-size:.875rem;color:var(--text-m);line-height:1.68}
 .pain-stat{
@@ -596,7 +597,8 @@ h1{
 }
 .ss-badge-text{font-size:.72rem;font-weight:600;color:var(--text-h)}
 .ss-badge-sub{font-size:.65rem;color:var(--text-s)}
-.ss-badge-icon{font-size:1.1rem}
+.ss-badge-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center}
+.ss-badge-icon svg{width:16px;height:16px;stroke:var(--teal);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .ss-badge.top-right{top:-18px;right:-18px}
 .ss-badge.bottom-left{bottom:-18px;left:-18px}
 
@@ -634,7 +636,8 @@ h1{
   transition:all .35s ease;position:relative;overflow:hidden;
 }
 .audience-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-5px);border-color:var(--teal-mid)}
-.aud-icon{font-size:2rem;margin-bottom:16px;display:block}
+.aud-icon{width:52px;height:52px;border-radius:14px;background:var(--teal-light);display:flex;align-items:center;justify-content:center;margin-bottom:20px;border:1px solid var(--teal-mid)}
+.aud-icon svg{width:24px;height:24px;stroke:var(--teal);stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .aud-tag{
   display:inline-block;font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   color:var(--teal);padding:3px 10px;border:1px solid var(--teal-mid);border-radius:100px;
@@ -667,7 +670,8 @@ h1{
   padding:3px 12px;border-radius:100px;white-space:nowrap;
   background:var(--teal);color:#fff;
 }
-.howit-icon{font-size:2rem;margin-bottom:16px;display:block}
+.howit-icon{width:52px;height:52px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.howit-icon svg{width:24px;height:24px;stroke:#fff;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .howit-card h3{font-size:1rem;font-weight:700;margin-bottom:8px;letter-spacing:-.01em}
 .howit-card p{font-size:.85rem;color:var(--text-m);line-height:1.65}
 
@@ -768,7 +772,8 @@ h1{
 .demo-feats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .demo-feat{text-align:center;padding:12px;position:relative}
 .demo-feat:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;bottom:20%;width:1px;background:var(--border)}
-.demo-feat-icon{font-size:1.3rem;margin-bottom:5px}
+.demo-feat-icon{display:flex;align-items:center;justify-content:center;margin:0 auto 5px;width:32px;height:32px}
+.demo-feat-icon svg{width:20px;height:20px;stroke:var(--teal);stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .demo-feat-text{font-size:.7rem;font-weight:600;color:var(--text-m)}
 
 /* ════════════════════════════════════════
@@ -821,7 +826,10 @@ footer{
     <a href="#demo" class="nav-link">Book a Demo</a>
   </div>
   <div class="nav-right">
-    <span class="nav-beta">⚡ Beta — 3 Spots Left</span>
+    <span class="nav-beta" style="display:inline-flex;align-items:center;gap:5px">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Beta — 3 Spots Left
+    </span>
     <a href="#beta" class="btn btn-teal" style="padding:9px 22px;font-size:.78rem">
       Lock In Pricing
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -986,19 +994,25 @@ footer{
     </div>
     <div class="pain-grid">
       <div class="pain-card fi">
-        <div class="pain-icon">🚪</div>
+        <div class="pain-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
         <h3>Door Knockers Cost You 30%</h3>
         <p>Paying your sales team 30% per close to canvass neighborhoods is unsustainable. You're funding people to find people — there's a better way.</p>
         <div class="pain-stat">Avg. door-to-door close rate: 1–3%</div>
       </div>
       <div class="pain-card fi fi-delay-1">
-        <div class="pain-icon">👻</div>
+        <div class="pain-icon">
+          <svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </div>
         <h3>97% of Visitors Leave Unidentified</h3>
         <p>You're spending on SEO and ads to drive traffic. But you can't follow up with someone you can't identify. Most of your pipeline is invisible right now.</p>
         <div class="pain-stat">Industry avg. site ID match rate: ~20%</div>
       </div>
       <div class="pain-card fi fi-delay-2">
-        <div class="pain-icon">🎯</div>
+        <div class="pain-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
         <h3>Broad Targeting Wastes Ad Spend</h3>
         <p>Targeting "homeowners in your metro" means you're paying to reach people who fixed their roof last month. Intent data changes the entire equation.</p>
         <div class="pain-stat">Brands waste 60–80% on unqualified audiences</div>
@@ -1068,7 +1082,7 @@ footer{
           <img src="htr-ss-audience-builder.png" alt="High Tide Radar — Audience Builder"/>
         </div>
         <div class="ss-badge top-right">
-          <span class="ss-badge-icon">🎯</span>
+          <span class="ss-badge-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
           <div>
             <div class="ss-badge-text">466 matching contacts</div>
             <div class="ss-badge-sub">Houston, TX · Roofing intent · 2 days</div>
@@ -1108,7 +1122,7 @@ footer{
           <img src="htr-ss-audiences.png" alt="High Tide Radar — All Audiences"/>
         </div>
         <div class="ss-badge bottom-left">
-          <span class="ss-badge-icon">⚡</span>
+          <span class="ss-badge-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
           <div>
             <div class="ss-badge-text">3,482 total records</div>
             <div class="ss-badge-sub">Across 3 active audiences</div>
@@ -1148,7 +1162,7 @@ footer{
           <img src="htr-ss-records.png" alt="High Tide Radar — Preview Records"/>
         </div>
         <div class="ss-badge top-right">
-          <span class="ss-badge-icon">✉️</span>
+          <span class="ss-badge-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
           <div>
             <div class="ss-badge-text">Validated email + phone</div>
             <div class="ss-badge-sub">On every matched record</div>
@@ -1182,7 +1196,7 @@ footer{
     </div>
     <div class="audience-grid">
       <div class="audience-card fi">
-        <span class="aud-icon">🏠</span>
+        <span class="aud-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
         <div class="aud-tag">Home Services</div>
         <h3>Home Services Companies</h3>
         <p>Roofing, HVAC, windows, landscaping, pest control. Know which neighborhoods are actively searching for your service — before your competitors knock on their door.</p>
@@ -1193,7 +1207,7 @@ footer{
         </div>
       </div>
       <div class="audience-card fi fi-delay-1">
-        <span class="aud-icon">📈</span>
+        <span class="aud-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>
         <div class="aud-tag">SMB · $1M–$10M Revenue</div>
         <h3>Growing Local Businesses</h3>
         <p>You've outgrown Facebook cold targeting but you're not big enough for a $50K/mo enterprise ad budget. Radar gives you enterprise-grade intelligence at a fraction of the cost.</p>
@@ -1204,7 +1218,7 @@ footer{
         </div>
       </div>
       <div class="audience-card fi fi-delay-2">
-        <span class="aud-icon">🏢</span>
+        <span class="aud-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
         <div class="aud-tag">Enterprise · $10M+ Revenue</div>
         <h3>Enterprise & Multi-Location</h3>
         <p>B2B companies targeting businesses by revenue, industry, employee count, and intent. Filter to exactly the businesses that match your ICP, then reach them everywhere.</p>
@@ -1229,19 +1243,19 @@ footer{
     <div class="howit-grid">
       <div class="howit-card fi">
         <div class="howit-badge">Step 1</div>
-        <span class="howit-icon">📋</span>
+        <span class="howit-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
         <h3>Strategy Call</h3>
         <p>30 minutes. We learn your service area, target customer, and revenue goals. You walk away with a custom audience blueprint for your market.</p>
       </div>
       <div class="howit-card fi fi-delay-1">
         <div class="howit-badge" style="background:var(--teal-2)">Step 2</div>
-        <span class="howit-icon">🎯</span>
+        <span class="howit-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
         <h3>Audience Build</h3>
         <p>We build your first intent audiences and connect your ad accounts. Visitor ID goes live on your site with one pixel. No dev work required on your end.</p>
       </div>
       <div class="howit-card fi fi-delay-2">
         <div class="howit-badge" style="background:var(--navy)">Step 3</div>
-        <span class="howit-icon">🚀</span>
+        <span class="howit-icon"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
         <h3>Launch & Scale</h3>
         <p>Audiences push to your channels automatically. We monitor, refresh daily, and optimize weekly. You focus on the sales calls coming in.</p>
       </div>
@@ -1289,7 +1303,7 @@ footer{
             <li>280M+ consumer profile database</li>
             <li>Dedicated onboarding call</li>
           </ul>
-          <div class="bc-lock">🔒 Rate locked for life at $1,500/mo</div>
+          <div class="bc-lock" style="display:flex;align-items:center;justify-content:center;gap:6px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Rate locked for life at $1,500/mo</div>
         </div>
         <div class="beta-card featured">
           <div class="beta-card-top">Most Popular</div>
@@ -1310,7 +1324,7 @@ footer{
             <li>Connected TV & display activation</li>
             <li>Weekly performance optimization calls</li>
           </ul>
-          <div class="bc-lock">🔒 Rate locked for life at $2,500/mo</div>
+          <div class="bc-lock" style="display:flex;align-items:center;justify-content:center;gap:6px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Rate locked for life at $2,500/mo</div>
         </div>
       </div>
 
@@ -1335,15 +1349,15 @@ footer{
       <div class="demo-card fi fi-delay-3">
         <div class="demo-feats">
           <div class="demo-feat">
-            <div class="demo-feat-icon">⚡</div>
+            <div class="demo-feat-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
             <div class="demo-feat-text">30-Minute Call</div>
           </div>
           <div class="demo-feat">
-            <div class="demo-feat-icon">🎯</div>
+            <div class="demo-feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
             <div class="demo-feat-text">Live Data Pull</div>
           </div>
           <div class="demo-feat">
-            <div class="demo-feat-icon">🔓</div>
+            <div class="demo-feat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></div>
             <div class="demo-feat-text">Zero Obligation</div>
           </div>
         </div>
